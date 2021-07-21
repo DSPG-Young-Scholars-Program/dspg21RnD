@@ -1,7 +1,5 @@
 library(shiny)
-library(leaflet)
 library(tidyverse)
-library(sf)
 library(ggthemes)
 library(RColorBrewer)
 library(sjmisc)
@@ -559,7 +557,7 @@ ui <- navbarPage(title = "I'm a title!",
 # server -----------------------------------------------------------
 server <- function(input, output, session) {
   # Run JavaScript Code
-  runjs(jscode)
+ # runjs(jscode)
   
   # socio plots: done -----------------------------------------------------
   
