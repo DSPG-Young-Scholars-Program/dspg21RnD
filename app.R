@@ -12,6 +12,7 @@ library(readxl)
 library(readr)
 library(stringr)
 library(shinyjs)
+library(leaflet)
 
 prettyblue <- "#232D4B"
 navBarBlue <- '#427EDC'
