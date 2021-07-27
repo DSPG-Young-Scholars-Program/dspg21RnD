@@ -21,7 +21,7 @@ options(spinner.color = prettyblue, spinner.color.background = '#ffffff', spinne
 colors <- c("#232d4b","#2c4f6b","#0e879c","#60999a","#d1e0bf","#d9e12b","#e6ce3a","#e6a01d","#e57200","#fdfdfd")
 
 # data -----------------------------------------------------------
-abstracts_shiny <- read_csv("data_shiny/abstracts_shiny.csv")
+#abstracts_shiny <- read_csv("data_shiny/abstracts_shiny.csv")
 
 # user -------------------------------------------------------------
 ui <- navbarPage(title = "RnD",
