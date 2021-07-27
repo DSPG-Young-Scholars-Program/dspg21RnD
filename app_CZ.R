@@ -20,6 +20,7 @@ options(spinner.color = prettyblue, spinner.color.background = '#ffffff', spinne
 colors <- c("#232d4b","#2c4f6b","#0e879c","#60999a","#d1e0bf","#d9e12b","#e6ce3a","#e6a01d","#e57200","#fdfdfd")
 
 # data -----------------------------------------------------------
+abstracts_shiny <- read_csv("data_shiny/abstracts_shiny.csv")
 
 # user -------------------------------------------------------------
 ui <- navbarPage(title = "RnD",
@@ -258,49 +259,29 @@ ui <- navbarPage(title = "RnD",
                                    h1(strong("Sentence Bert Embedding"), align = "center"),
                                    p("", style = "padding-top:10px;"),
                                    column(4,
-                                          h4(strong("Who does Patrick County Serve?")),
-                                          p("We examined Patrick County population sociodemographic and socioeconomic characteristics to better understand the 
-                                            residents that the county serves."),
-                                          p("We retrieved American Community Survey (ACS) data to calculate this information at census block group and census 
-                                            tract levels. ACS is an ongoing yearly survey conducted by the U.S Census Bureau that samples households to compile 1-year and 5-year datasets. We used 
-                                            the most recently available 5-year estimates from 2014/18 to compute percent Patrick County residents in a given block group or tract by age, race, ethnicity, 
-                                            employment, health insurance coverage, and other relevant characteristics."),
-                                          p("Our interactive plots visualize census block-group level sociodemographic characteristics of Patrick County residents.")),
+                                          h4(strong("Method")),
+                                          p("We scraped" , a(href = "https://en.wikipedia.org/wiki/Artificial_intelligence", "Artificial Intelligence Wikipedia page", target = "_blank") , "and extracted text. 
+                                            We tokenized the paragraphs into sentences."),
+                                          p("We also tokenized the abstracts into sentences. Then, we computed sentence embeddings using", a(href = "https://www.sbert.net/", "Sentence BERT (SBERT)", target = "_blank"), 
+                                            ". We then compare the embedding of AI corpus to Federal RePORTER abstracts using cosine-similarity. Cosine-similarity score ranges from 0 to 1, higher the score, more similar two sentences are to each other. For each sentence in an abstract, we identified the top ten most similar sentences
+                                            from our AI corpus and obtained their cosine-similarity scores. We then took the average of the ten scores and obtained an average score for each abstract, indicating how similar the abstract is to AI. We classify an abstract with a score that is 2.5 standard deviation above the mean as AI related." ),
+                                          p("Our interactive plots visualize the hot and cold topics among identified AI-related abstracts.")),
                                    column(8,
-                                          h4(strong("Map of Resident Socioeconomic Characteristics by Census Tract or Block Group")),
+                                          h4(strong("Topic Modeling Results")),
                                           tabsetPanel(
-                                            tabPanel("Older Adult Characteristics",
-                                                     p(""),
-                                                     column(6,
-                                                            selectInput("olddrop", "1. Select Variable:", width = "100%", choices = c(
-                                                              "Percent with Vision Difficulty" = "visdiff",
-                                                              "Percent with Ambulatory Difficulty" = "ambdiff",
-                                                              "Percent with Self-Care Difficulty" = "carediff",
-                                                              "Percent with Cognitive Difficulty" = "cogdiff",
-                                                              "Percent with Independent Living Difficulty" = "ildiff",
-                                                              "Percent with Any Disability" = "disab",
-                                                              "Percent in Poverty" = "inpov",
-                                                              "Percent in Labor Force" = "labfor")
-                                                            )),
-                                                     column(6,
-                                                            selectInput("oldspecdrop", "2. Select Group:", width = "100%", choices = c(
-                                                              "Total",
-                                                              "Female" = "_f",
-                                                              "Male" = "_m")
-                                                            )),
-                                                     withSpinner(leafletOutput("oldplot")),
-                                                     p(tags$small("Data Source: American Community Survey 2014/18 5-Year Estimates."))
+                                            tabPanel("Funding Sources",
+                                                     p("")
                                             ),
-                                            tabPanel("Older Adult Household Characteristics",
+                                            tabPanel("NMF Model Fitting",
+                                                     p("Number of topics = 10 achieved the highest coherence with topics. Thus we based on the coherence model, 10 is the optimal number of topics."),
+                                                     img(src = "nmf_fitting_bert.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
+                                            ),
+                                            tabPanel("Emerging Topics",
                                                      p(""),
-                                                     selectInput("hhdrop", "Select Variable:", width = "100%", choices = c(
-                                                       "Percent Married Couple Households with one or more 60+ Member" = "hhsixty_married",
-                                                       "Percent Households with one or more 60+ Members" = "hhsixty_total",
-                                                       "Percent Single (no partner present) Households with one or more 60+ Member" = "hhsixty_nonfam",
-                                                       "Percent Households with one or more Male 60+ Members" = "hhsixty_mhh",
-                                                       "Households with one or more Female 60+ Members" = "hhsixty_fhh")),
-                                                     withSpinner(leafletOutput("householdplot")),
-                                                     p(tags$small("Data Source: American Community Survey 2014/18 5-Year Estimates."))
+                                                     selectInput("n_topic", "Select Variable:", width = "100%", choices = c(
+                                                       "10_topics" = "10_topics",
+                                                       "20_topics" = "20_topics")),
+                                                     imageOutput("nmf_topic_bert")
                                             )
                                           )
                                    )
@@ -362,12 +343,25 @@ server <- function(input, output, session) {
   # Run JavaScript Code
  # runjs(jscode)
   
-  # socio plots: done -----------------------------------------------------
-  
-  var <- reactive({
-    input$sociodrop
-  })
-  
+  # Method 3. Crystal-----------------------------------------------------
+  output$nmf_topic_bert <- renderImage({
+    if (input$n_topic == "10_topics"){
+      #img(src = "bert_10topic_trends.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
+      outimg = normalizePath("bert_10topic_trends.png")
+    
+      # Return a list containing the filename and alt text
+      list(src = outimg,
+           alt = paste("Image number"))
+    }else{
+      #img(src = "bert_10topic_trends.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
+      outimg2 = normalizePath("bert_20topic_trends.png")
+      
+      # Return a list containing the filename and alt text
+      list(src = outimg2,
+           alt = paste("Image number"))
+    }
+  } , deleteFile = TRUE)
+
 }
 
 shinyApp(ui = ui, server = server)
