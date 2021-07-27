@@ -1,16 +1,17 @@
 if(!require(shiny)) install.packages("shiny", repos = "http://cran.us.r-project.org")
 if(!require(shinythemes)) install.packages("shinythemes", repos = "http://cran.us.r-project.org")
+if(!require(rsconnect)) install.packages("rsconnect", repos = "http://cran.us.r-project.org")
+if(!require(shinycssloaders)) install.packages("shinycssloaders", repos = "http://cran.us.r-project.org")
+if(!require(shinyjs)) install.packages("shinyjs", repos = "http://cran.us.r-project.org")
+
 if(!require(sjmisc)) install.packages("sjmisc", repos = "http://cran.us.r-project.org")
 if(!require(RColorBrewer)) install.packages("RColorBrewer", repos = "http://cran.us.r-project.org")
 if(!require(ggthemes)) install.packages("ggthemes", repos = "http://cran.us.r-project.org")
 if(!require(tidyverse)) install.packages("tidyverse", repos = "http://cran.us.r-project.org")
 if(!require(DT)) install.packages("DT", repos = "http://cran.us.r-project.org")
 if(!require(data.table)) install.packages("data.table", repos = "http://cran.us.r-project.org")
-if(!require(rsconnect)) install.packages("rsconnect", repos = "http://cran.us.r-project.org")
-if(!require(shinycssloaders)) install.packages("shinycssloaders", repos = "http://cran.us.r-project.org")
 if(!require(readr)) install.packages("readr", repos = "http://cran.us.r-project.org")
 if(!require(stringr)) install.packages("stringr", repos = "http://cran.us.r-project.org")
-if(!require(shinyjs)) install.packages("shinyjs", repos = "http://cran.us.r-project.org")
 if(!require(leaflet)) install.packages("leaflet", repos = "http://cran.us.r-project.org")
 
 prettyblue <- "#232D4B"
@@ -278,10 +279,22 @@ ui <- navbarPage(title = "RnD",
                                             ),
                                             tabPanel("Emerging Topics",
                                                      p(""),
-                                                     selectInput("n_topic", "Select Variable:", width = "100%", choices = c(
-                                                       "10_topics" = "10_topics",
-                                                       "20_topics" = "20_topics")),
-                                                     imageOutput("nmf_topic_bert")
+                                                     selectInput(
+                                                       inputId = "k", 
+                                                       label = "Select Number of Topics:",
+                                                       width = "50%", 
+                                                       choices = c('10 Topics', '20 Topics'),
+                                                       selected = '10 Topics'
+                                                       ),
+                                                     conditionalPanel("input.k == '10 Topics'",
+                                                       # img(src = "bert_10topic_trends.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
+                                                       img(src = "bert_10topic_trends.png", width = "800px")
+                                                     ),
+                                                     conditionalPanel("input.k == '20 Topics'",
+                                                       #img(src = "bert_20topic_trends.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
+                                                       img(src = "bert_20topic_trends.png", width = "800px")
+                                                     )
+
                                             )
                                           )
                                    )
@@ -345,23 +358,27 @@ server <- function(input, output, session) {
   
   # Method 3. Crystal-----------------------------------------------------
   output$nmf_topic_bert <- renderImage({
-    if (input$n_topic == "10_topics"){
-      #img(src = "bert_10topic_trends.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
-      outimg = normalizePath("bert_10topic_trends.png")
-    
-      # Return a list containing the filename and alt text
-      list(src = outimg,
-           alt = paste("Image number"))
-    }else{
-      #img(src = "bert_10topic_trends.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
-      outimg2 = normalizePath("bert_20topic_trends.png")
+  #   if (input$n_topic == "10_topics"){
+  #     #img(src = "bert_10topic_trends.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
+  #     outimg = normalizePath("bert_10topic_trends.png")
+  #   
+  #     # Return a list containing the filename and alt text
+  #     list(src = outimg,
+  #          alt = paste("Image number"))
+  #   }else{
+  #     #img(src = "bert_10topic_trends.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
+  #     outimg2 = normalizePath("bert_20topic_trends.png")
+  #     
+  #     # Return a list containing the filename and alt text
+  #     list(src = outimg2,
+  #          alt = paste("Image number"))
+  #   }
+  # })
+   
+      img(src = "bert_10topic_trends.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
       
-      # Return a list containing the filename and alt text
-      list(src = outimg2,
-           alt = paste("Image number"))
-    }
-  } , deleteFile = TRUE)
-
+  })
+  
 }
 
 shinyApp(ui = ui, server = server)
