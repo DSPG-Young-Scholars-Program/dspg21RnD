@@ -3,6 +3,7 @@ if(!require(shinythemes)) install.packages("shinythemes", repos = "http://cran.u
 if(!require(rsconnect)) install.packages("rsconnect", repos = "http://cran.us.r-project.org")
 if(!require(shinycssloaders)) install.packages("shinycssloaders", repos = "http://cran.us.r-project.org")
 if(!require(shinyjs)) install.packages("shinyjs", repos = "http://cran.us.r-project.org")
+if(!require(shinydashboard)) install.packages("shinydashboard", repos = "http://cran.us.r-project.org")
 
 if(!require(sjmisc)) install.packages("sjmisc", repos = "http://cran.us.r-project.org")
 if(!require(RColorBrewer)) install.packages("RColorBrewer", repos = "http://cran.us.r-project.org")
@@ -16,7 +17,7 @@ if(!require(leaflet)) install.packages("leaflet", repos = "http://cran.us.r-proj
 
 prettyblue <- "#232D4B"
 navBarBlue <- '#427EDC'
-options(spinner.color = prettyblue, spinner.color.background = '#ffffff', spinner.size = 3, spinner.type = 7)
+#options(spinner.color = prettyblue, spinner.color.background = '#ffffff', spinner.size = 3, spinner.type = 7)
 
 colors <- c("#232d4b","#2c4f6b","#0e879c","#60999a","#d1e0bf","#d9e12b","#e6ce3a","#e6a01d","#e57200","#fdfdfd")
 
@@ -192,7 +193,7 @@ ui <- navbarPage(title = "RnD",
                                                        "Percent Single (no partner present) Households with one or more 60+ Member" = "hhsixty_nonfam",
                                                        "Percent Households with one or more Male 60+ Members" = "hhsixty_mhh",
                                                        "Households with one or more Female 60+ Members" = "hhsixty_fhh")),
-                                                     withSpinner(leafletOutput("householdplot")),
+                                                   #  withSpinner(leafletOutput("householdplot")),
                                                      p(tags$small("Data Source: American Community Survey 2014/18 5-Year Estimates."))
                                             )
                                         )
@@ -236,7 +237,7 @@ ui <- navbarPage(title = "RnD",
                                                               "Female" = "_f",
                                                               "Male" = "_m")
                                                             )),
-                                                     withSpinner(leafletOutput("oldplot")),
+                                                   #  withSpinner(leafletOutput("oldplot")),
                                                      p(tags$small("Data Source: American Community Survey 2014/18 5-Year Estimates."))
                                             ),
                                             tabPanel("Older Adult Household Characteristics",
@@ -247,7 +248,7 @@ ui <- navbarPage(title = "RnD",
                                                        "Percent Single (no partner present) Households with one or more 60+ Member" = "hhsixty_nonfam",
                                                        "Percent Households with one or more Male 60+ Members" = "hhsixty_mhh",
                                                        "Households with one or more Female 60+ Members" = "hhsixty_fhh")),
-                                                     withSpinner(leafletOutput("householdplot")),
+                                                    # withSpinner(leafletOutput("householdplot")),
                                                      p(tags$small("Data Source: American Community Survey 2014/18 5-Year Estimates."))
                                             )
                                           )
@@ -356,28 +357,6 @@ server <- function(input, output, session) {
   # Run JavaScript Code
  # runjs(jscode)
   
-  # Method 3. Crystal-----------------------------------------------------
-  output$nmf_topic_bert <- renderImage({
-  #   if (input$n_topic == "10_topics"){
-  #     #img(src = "bert_10topic_trends.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
-  #     outimg = normalizePath("bert_10topic_trends.png")
-  #   
-  #     # Return a list containing the filename and alt text
-  #     list(src = outimg,
-  #          alt = paste("Image number"))
-  #   }else{
-  #     #img(src = "bert_10topic_trends.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
-  #     outimg2 = normalizePath("bert_20topic_trends.png")
-  #     
-  #     # Return a list containing the filename and alt text
-  #     list(src = outimg2,
-  #          alt = paste("Image number"))
-  #   }
-  # })
-   
-      img(src = "bert_10topic_trends.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
-      
-  })
   
 }
 
