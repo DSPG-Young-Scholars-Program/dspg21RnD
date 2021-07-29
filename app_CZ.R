@@ -262,12 +262,16 @@ ui <- navbarPage(title = "RnD",
                                    p("", style = "padding-top:10px;"),
                                    column(4,
                                           h4(strong("Method")),
+                                          h5(strong("Web Scraping")),
                                           p("We scraped" , a(href = "https://en.wikipedia.org/wiki/Artificial_intelligence", "Artificial Intelligence Wikipedia page", target = "_blank") , "and extracted text. 
                                             We tokenized the paragraphs into sentences."),
+                                          h5(strong("Sentence BERT Embedding and Cosine Similarity Score")),
                                           p("We also tokenized the abstracts into sentences. Then, we computed sentence embeddings using", a(href = "https://www.sbert.net/", "Sentence BERT (SBERT)", target = "_blank"), 
                                             ". We then compare the embedding of AI corpus to Federal RePORTER abstracts using cosine-similarity. Cosine-similarity score ranges from 0 to 1, higher the score, more similar two sentences are to each other. For each sentence in an abstract, we identified the top ten most similar sentences
                                             from our AI corpus and obtained their cosine-similarity scores. We then took the average of the ten scores and obtained an average score for each abstract, indicating how similar the abstract is to AI. We classify an abstract with a score that is 2.5 standard deviation above the mean as AI related." ),
-                                          p("Our interactive plots visualize the hot and cold topics among identified AI-related abstracts.")),
+                              
+                                          h5(strong("Choosing a Cutoff Score")),
+                                          p("To choose a cutoff cosine similarity score,")),
                                    column(8,
                                           h4(strong("Topic Modeling Results")),
                                           tabsetPanel(
@@ -280,21 +284,27 @@ ui <- navbarPage(title = "RnD",
                                             ),
                                             tabPanel("Emerging Topics",
                                                      p(""),
+                                                     p("Our interactive plots visualize the hot and cold topics among identified AI-related abstracts."),
+                                                     
                                                      selectInput(
                                                        inputId = "k", 
                                                        label = "Select Number of Topics:",
                                                        width = "50%", 
-                                                       choices = c('10 Topics', '20 Topics'),
+                                                       choices = c('10 Topics', '20 Topics', '30 Topics'),
                                                        selected = '10 Topics'
                                                        ),
                                                      conditionalPanel("input.k == '10 Topics'",
-                                                       # img(src = "bert_10topic_trends.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
-                                                       img(src = "bert_10topic_trends.png", width = "800px")
+                                                       img(src = "bert_trends_10topics.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
                                                      ),
                                                      conditionalPanel("input.k == '20 Topics'",
-                                                       #img(src = "bert_20topic_trends.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
-                                                       img(src = "bert_20topic_trends.png", width = "800px")
-                                                     )
+                                                       img(src = "bert_trends_20topics.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
+                                                     ),
+                                                     conditionalPanel("input.k == '30 Topics'",
+                                                                      img(src = "bert_trends_30topics.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
+                                                     ),
+                                                     p(""),
+                                                     p(""),
+                                                     p("")
 
                                             )
                                           )
