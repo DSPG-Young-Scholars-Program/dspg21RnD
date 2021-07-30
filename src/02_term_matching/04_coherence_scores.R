@@ -2,7 +2,7 @@ library(readr)
 library(dplyr)
 library(tidyr)
 
-nmf_oecd <- read_csv("~/git/dspg21RnD/data/dspg21RnD/nmf_OECD_10.csv")
+#nmf_oecd <- read_csv("~/git/dspg21RnD/data/dspg21RnD/nmf_OECD_10.csv")
 nmf_oecd <- nmf_oecd%>%
   gather("iteration", "coherence_score", -n_topics)
 nmf_oecd$n_topics <- as.factor(nmf_oecd$n_topics)

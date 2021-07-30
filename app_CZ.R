@@ -21,10 +21,12 @@ navBarBlue <- '#427EDC'
 
 colors <- c("#232d4b","#2c4f6b","#0e879c","#60999a","#d1e0bf","#d9e12b","#e6ce3a","#e6a01d","#e57200","#fdfdfd")
 
+#setwd("/home/zz3hs/git/dspg21RnD")
+
 # data -----------------------------------------------------------
-abstracts <- read.csv("~/git/dspg21RnD/data/dspg21RnD/abstracts_shiny.csv")
+abstracts <- readRDS("data_shiny/abstracts_shiny.rds")
 abstracts_oecd <- abstracts %>% 
-  filter(IS_AI_OECD == "True")
+  filter(IS_AI_OECD == T)
 
 # user -------------------------------------------------------------
 ui <- navbarPage(title = "RnD",
