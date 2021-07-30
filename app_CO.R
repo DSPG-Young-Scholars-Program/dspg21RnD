@@ -20,6 +20,9 @@ options(spinner.color = prettyblue, spinner.color.background = '#ffffff', spinne
 colors <- c("#232d4b","#2c4f6b","#0e879c","#60999a","#d1e0bf","#d9e12b","#e6ce3a","#e6a01d","#e57200","#fdfdfd")
 
 # data -----------------------------------------------------------
+abstracts <- read.csv("~/git/dspg21RnD/data/dspg21RnD/abstracts_shiny.csv")
+abstracts_oecd <- abstracts %>% 
+  filter(IS_AI_OECD == "True")
 
 # user -------------------------------------------------------------
 ui <- navbarPage(title = "RnD",
@@ -132,13 +135,10 @@ ui <- navbarPage(title = "RnD",
                                    p("", style = "padding-top:10px;"),
                                    column(5,
                                           h4(strong("DATA")),
-                                          p("We examined Patrick County population sociodemographic and socioeconomic characteristics to better understand the 
-                                            residents that the county serves."),
-                                          p("We retrieved American Community Survey (ACS) data to calculate this information at census block group and census 
-                                            tract levels. ACS is an ongoing yearly survey conducted by the U.S Census Bureau that samples households to compile 1-year and 5-year datasets. We used 
-                                            the most recently available 5-year estimates from 2014/18 to compute percent Patrick County residents in a given block group or tract by age, race, ethnicity, 
-                                            employment, health insurance coverage, and other relevant characteristics."),
-                                          p("Our interactive plots visualize census block-group level sociodemographic characteristics of Patrick County residents.")),
+                                          p("We examined research projects abstracts within the Federal RePORTER."),
+                                          p("The Federal RePORTER is a database of federally funded science research projects. The database provides information on projects, including supporting
+                                            agencies, starting dates, project terms, and abstracts. Our dataset consisted project abstracts that began within the years of 2009-2018, 
+                                            or around ______ abstracts.")),
                                    column(5,
                                           h4(strong("Methodology"))
                                           )
@@ -151,48 +151,143 @@ ui <- navbarPage(title = "RnD",
                                    h1(strong("Term matching"), align = "center"),
                                    p("", style = "padding-top:10px;"),
                                    column(4,
-                                          h4(strong("Who does Patrick County Serve?")),
-                                          p("We examined Patrick County population sociodemographic and socioeconomic characteristics to better understand the 
-                                            residents that the county serves."),
-                                          p("We retrieved American Community Survey (ACS) data to calculate this information at census block group and census 
-                                            tract levels. ACS is an ongoing yearly survey conducted by the U.S Census Bureau that samples households to compile 1-year and 5-year datasets. We used 
-                                            the most recently available 5-year estimates from 2014/18 to compute percent Patrick County residents in a given block group or tract by age, race, ethnicity, 
-                                            employment, health insurance coverage, and other relevant characteristics."),
-                                          p("Our interactive plots visualize census block-group level sociodemographic characteristics of Patrick County residents.")),
+                                          h4(strong("OECD Terms")),
+                                          p("To perform term matching, we used a list of artificial intelligence-related terms from the Organization for Economic Co-operation and Development (OECD). 
+                                            The list of key terms are broken into 2 groups: core terms and non-core terms. See the listed key terms below."),
+                                          p("In addition to a list of key terms, OECD provided methodology for retriving documents related to artificial intelligence. As suggested by OECD, we tagged a document
+                                            as being related to AI if at least one core term or two non-core terms were found within the project abstract."),
+                                          h5(strong("Core Terms")),
+                                          wellPanel(id="tPanel",style="overflow-y:scroll; max-height: 200px",
+                                            tags$ul(tags$li("adaboost"),
+                                                    tags$li("artificial intelligence"),
+                                                    tags$li("artificial neural network"),
+                                                    tags$li("back propagation"),
+                                                    tags$li("back propagation neural network"),
+                                                    tags$li("computational intelligence"),
+                                                    tags$li("computer vision"),
+                                                    tags$li("convolutional neural network"),
+                                                    tags$li("deep belief network"),
+                                                    tags$li("deep convolutional neural network"),
+                                                    tags$li("deep learn"),
+                                                    tags$li("deep neural network"),
+                                                    tags$li("elman neural network"),
+                                                    tags$li("expert system"),
+                                                    tags$li("fee forward neural network"),
+                                                    tags$li("inference engine"),
+                                                    tags$li("machine intelligence"),
+                                                    tags$li("machine learn"),
+                                                    tags$li("machine translation"),
+                                                    tags$li("machine vision"),
+                                                    tags$li("multilayer neural network"),
+                                                    tags$li("natural language process"),
+                                                    tags$li("perceptron"),
+                                                    tags$li("random forest"),
+                                                    tags$li("rbf neural network"),
+                                                    tags$li("recurrent neural network"),
+                                                    tags$li("self organize map"),
+                                                    tags$li("spike neural network"),
+                                                    tags$li("supervise learn"),
+                                                    tags$li("support vector machine"),
+                                                    tags$li("svm classifier"),
+                                                    tags$li("unsupervised learn"))),
+                                          h5(strong("Non-core Terms")),
+                                          wellPanel(id="tPanel",style="overflow-y:scroll; max-height: 200px",
+                                            tags$ul(tags$li("actor critic"),
+                                                    tags$li("analog vlsi"),
+                                                    tags$li("associative memory"),
+                                                    tags$li("autonomous vehicle"),
+                                                    tags$li("bayes classifer"),
+                                                    tags$li("bayesian belief network"),
+                                                    tags$li("bioinformatics"),
+                                                    tags$li("camera calibration"),
+                                                    tags$li("collaborative system"),
+                                                    tags$li("commonsense reason"),
+                                                    tags$li("computational biology"),
+                                                    tags$li("datum mine"),
+                                                    tags$li("decision tree"),
+                                                    tags$li("description logic"),
+                                                    tags$li("dimensionality reduction"),
+                                                    tags$li("discriminant analysis"),
+                                                    tags$li("fuzzy logic"),
+                                                    tags$li("gene ontology"),
+                                                    tags$li("hide markov model"),
+                                                    tags$li("humanoid"),
+                                                    tags$li("image alignment"),
+                                                    tags$li("image match"),
+                                                    tags$li("information retrieval"),
+                                                    tags$li("kegg pathway"),
+                                                    tags$li("knowledge base"),
+                                                    tags$li("knowledge representation and reason"),
+                                                    tags$li("linear discriminant"),
+                                                    tags$li("markov decision process"),
+                                                    tags$li("mulitclass classification"),
+                                                    tags$li("naive bayes"),
+                                                    tags$li("name entity recognition"),
+                                                    tags$li("near neighbor classifier"),
+                                                    tags$li("neural network"),
+                                                    tags$li("neuro fuzzy"),
+                                                    tags$li("neuromorphic compute"),
+                                                    tags$li("neuromorphic hardware"),
+                                                    tags$li("non rigid registration"),
+                                                    tags$li("nonmonotonic reason"),
+                                                    tags$li("object recognition"),
+                                                    tags$li("opinion mine"),
+                                                    tags$li("optimal search"),
+                                                    tags$li("pattern analysis"),
+                                                    tags$li("pattern recognition"),
+                                                    tags$li("person re identification"),
+                                                    tags$li("principal component analysis"),
+                                                    tags$li("question answer"),
+                                                    tags$li("radial basis function"),
+                                                    tags$li("rbf kernel"),
+                                                    tags$li("reinforcement learn"),
+                                                    tags$li("rigid registration"),
+                                                    tags$li("robot"),
+                                                    tags$li("sarsa"),
+                                                    tags$li("sensor datum fusion"),
+                                                    tags$li("sensor network"),
+                                                    tags$li("speech recognition"),
+                                                    tags$li("stereo match"),
+                                                    tags$li("symbolic reason"),
+                                                    tags$li("system and control theory"),
+                                                    tags$li("template match"),
+                                                    tags$li("text categorization"),
+                                                    tags$li("text mine"),
+                                                    tags$li("text summarization"),
+                                                    tags$li("word sense disambiguation")))),
                                    column(8,
-                                          h4(strong("Map of Resident Socioeconomic Characteristics by Census Tract or Block Group")),
+                                          h4(strong("Term Matching Results")),
                                           tabsetPanel(
-                                            tabPanel("Older Adult Characteristics",
-                                                     p(""),
-                                                     column(6,
-                                                            selectInput("olddrop", "1. Select Variable:", width = "100%", choices = c(
-                                                              "Percent with Vision Difficulty" = "visdiff",
-                                                              "Percent with Ambulatory Difficulty" = "ambdiff",
-                                                              "Percent with Self-Care Difficulty" = "carediff",
-                                                              "Percent with Cognitive Difficulty" = "cogdiff",
-                                                              "Percent with Independent Living Difficulty" = "ildiff",
-                                                              "Percent with Any Disability" = "disab",
-                                                              "Percent in Poverty" = "inpov",
-                                                              "Percent in Labor Force" = "labfor")
-                                                            )),
-                                                     column(6,
-                                                            selectInput("oldspecdrop", "2. Select Group:", width = "100%", choices = c(
-                                                              "Total",
-                                                              "Female" = "_f",
-                                                              "Male" = "_m")
-                                                            ))
+                                            tabPanel("Funding Sources",
+                                                     plotOutput("oecd_agency"),
+                                                     plotOutput("oecd_year")
+                                                     
                                             ),
-                                            tabPanel("Older Adult Household Characteristics",
+                                            tabPanel("NMF Model Fitting",
+                                                     p("The highest Coherence Score was achieved with Number of Topics = 20. Based on the coherence model, 20 was the optimal number of topics."),
+                                                     img(src = "oecd_coherence.png", style = "display:  block; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;", width = "600px")
+                                            ),
+                                            tabPanel("Emerging Topics",
                                                      p(""),
-                                                     selectInput("hhdrop", "Select Variable:", width = "100%", choices = c(
-                                                       "Percent Married Couple Households with one or more 60+ Member" = "hhsixty_married",
-                                                       "Percent Households with one or more 60+ Members" = "hhsixty_total",
-                                                       "Percent Single (no partner present) Households with one or more 60+ Member" = "hhsixty_nonfam",
-                                                       "Percent Households with one or more Male 60+ Members" = "hhsixty_mhh",
-                                                       "Households with one or more Female 60+ Members" = "hhsixty_fhh")),
-                                                     withSpinner(leafletOutput("householdplot")),
-                                                     p(tags$small("Data Source: American Community Survey 2014/18 5-Year Estimates."))
-                                            )
+                                                     p("Our interactive plots visualize the hot and cold topics among identified AI-related abstracts."),
+                                                     
+                                                     selectInput(
+                                                       inputId = "k", 
+                                                       label = "Select Number of Topics:",
+                                                       width = "50%", 
+                                                       choices = c('10 Topics', '20 Topics', '30 Topics'),
+                                                       selected = '10 Topics'
+                                                     ),
+                                                     conditionalPanel("input.k == '10 Topics'",
+                                                                      img(src = "oecd_10_topic_trends.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
+                                                     ),
+                                                     conditionalPanel("input.k == '20 Topics'",
+                                                                      img(src = "oecd_20_topic_trends.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
+                                                     ),
+                                                     conditionalPanel("input.k == '30 Topics'",
+                                                                      img(src = "oecd_30_topic_trends.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
+                                                     )
+                                                     )
                                         )
                                     )
                                    )
@@ -234,7 +329,7 @@ ui <- navbarPage(title = "RnD",
                                                               "Female" = "_f",
                                                               "Male" = "_m")
                                                             )),
-                                                     withSpinner(leafletOutput("oldplot")),
+                                                    # withSpinner(leafletOutput("oldplot")),
                                                      p(tags$small("Data Source: American Community Survey 2014/18 5-Year Estimates."))
                                             ),
                                             tabPanel("Older Adult Household Characteristics",
@@ -245,7 +340,7 @@ ui <- navbarPage(title = "RnD",
                                                        "Percent Single (no partner present) Households with one or more 60+ Member" = "hhsixty_nonfam",
                                                        "Percent Households with one or more Male 60+ Members" = "hhsixty_mhh",
                                                        "Households with one or more Female 60+ Members" = "hhsixty_fhh")),
-                                                     withSpinner(leafletOutput("householdplot")),
+                                                     #withSpinner(leafletOutput("householdplot")),
                                                      p(tags$small("Data Source: American Community Survey 2014/18 5-Year Estimates."))
                                             )
                                           )
@@ -288,7 +383,7 @@ ui <- navbarPage(title = "RnD",
                                                               "Female" = "_f",
                                                               "Male" = "_m")
                                                             )),
-                                                     withSpinner(leafletOutput("oldplot")),
+                                                     #withSpinner(leafletOutput("oldplot")),
                                                      p(tags$small("Data Source: American Community Survey 2014/18 5-Year Estimates."))
                                             ),
                                             tabPanel("Older Adult Household Characteristics",
@@ -299,7 +394,7 @@ ui <- navbarPage(title = "RnD",
                                                        "Percent Single (no partner present) Households with one or more 60+ Member" = "hhsixty_nonfam",
                                                        "Percent Households with one or more Male 60+ Members" = "hhsixty_mhh",
                                                        "Households with one or more Female 60+ Members" = "hhsixty_fhh")),
-                                                     withSpinner(leafletOutput("householdplot")),
+                                                     #withSpinner(leafletOutput("householdplot")),
                                                      p(tags$small("Data Source: American Community Survey 2014/18 5-Year Estimates."))
                                             )
                                           )
@@ -362,10 +457,27 @@ server <- function(input, output, session) {
   # Run JavaScript Code
  # runjs(jscode)
   
-  # socio plots: done -----------------------------------------------------
+  # oecd agency plot
+  output$oecd_agency <- renderPlot({
+    abstracts_oecd %>% 
+      group_by(DEPARTMENT) %>% 
+      count() %>% 
+      ggplot(aes(x=DEPARTMENT, y=n))+
+      geom_bar(stat='identity')
+  })
   
-  var <- reactive({
-    input$sociodrop
+  # oecd start year plot
+  output$oecd_year <- renderPlot({
+    
+    abstracts_oecd %>% 
+      mutate(d=as.Date(PROJECT_START_DATE, format="%m/%d/%Y")) %>% 
+      mutate(d=format(d,"%Y")) %>% 
+      filter(d<"2019") %>% 
+      group_by(d) %>% 
+      count() %>% 
+      ggplot(aes(x=d, y=n))+
+      geom_bar(stat='identity')+
+      theme(axis.text.x=element_text(angle=90))
   })
   
 }
