@@ -23,7 +23,7 @@ def keyword_proportion(document, keyword_list):
 def superkeyword_presence(document, superkeywords):
     """Return 1 if document contains any superkeywords, 0 if not."""
     for word in superkeywords:
-        if word in document.split():
+        if word in document:
             return True
     return False
 
