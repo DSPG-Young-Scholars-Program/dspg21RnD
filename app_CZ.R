@@ -22,7 +22,9 @@ navBarBlue <- '#427EDC'
 colors <- c("#232d4b","#2c4f6b","#0e879c","#60999a","#d1e0bf","#d9e12b","#e6ce3a","#e6a01d","#e57200","#fdfdfd")
 
 # data -----------------------------------------------------------
-#abstracts_shiny <- read_csv("data_shiny/abstracts_shiny.csv")
+abstracts <- read.csv("~/git/dspg21RnD/data/dspg21RnD/abstracts_shiny.csv")
+abstracts_oecd <- abstracts %>% 
+  filter(IS_AI_OECD == "True")
 
 # user -------------------------------------------------------------
 ui <- navbarPage(title = "RnD",
@@ -143,10 +145,17 @@ ui <- navbarPage(title = "RnD",
                                             employment, health insurance coverage, and other relevant characteristics."),
                                           p("Our interactive plots visualize census block-group level sociodemographic characteristics of Patrick County residents.")),
                                    column(5,
-                                          h4(strong("Methodology"))
-                                          )
-                                   )
+                                          h4(strong("Methodology")),
+                                          fluidRow( style = "margin: 6px;",
+                                                   p("", style = "padding-top:10px;"),
+                                                   h4(strong("Identifying Emerging Topics")),
+                                                          p("In order to identify which topics in AI are emerging, we use linear regression on the abstracts about a topic over the years in the data.
+                                            A positive correlation between the topic prevalence in our corpus over time indicates that it is an emerging topic in AI, or a 'hot' topic.
+                                            A negative correlation tells us that this topic is decreasing in popularity, or is a 'cold' topic.")
+                                                          )
                                           
+                                   )
+                                   )
                           ),
                  # Method 1. OECD, Cierra -----------------------------------------------------------
                  tabPanel("Filtering Method 1. OECD", value = "socio",
@@ -201,60 +210,46 @@ ui <- navbarPage(title = "RnD",
                                    )
                           ),
                 
-                 # Method 2. term matching + LDA, Haleigh -----------------------------------------------------------
-                 tabPanel("Filtering Method 2. term matching + LDA", value = "socio",
+                 # Method 2. Term Matching + LDA, Haleigh -----------------------------------------------------------
+                 tabPanel("Filtering Method 2. Term Matching + LDA", value = "socio",
                           fluidRow(style = "margin: 6px;",
                                    h1(strong("Term matching + LDA"), align = "center"),
                                    p("", style = "padding-top:10px;"),
                                    column(4,
-                                          h4(strong("Who does Patrick County Serve?")),
-                                          p("We examined Patrick County population sociodemographic and socioeconomic characteristics to better understand the 
-                                            residents that the county serves."),
-                                          p("We retrieved American Community Survey (ACS) data to calculate this information at census block group and census 
-                                            tract levels. ACS is an ongoing yearly survey conducted by the U.S Census Bureau that samples households to compile 1-year and 5-year datasets. We used 
-                                            the most recently available 5-year estimates from 2014/18 to compute percent Patrick County residents in a given block group or tract by age, race, ethnicity, 
-                                            employment, health insurance coverage, and other relevant characteristics."),
-                                          p("Our interactive plots visualize census block-group level sociodemographic characteristics of Patrick County residents.")),
+                                          h4(strong("Method Borrowed from Eads and others")),
+                                          p("This method uses a combination of term matching and LDA in order to filter to AI-related grant abstracts."),
+                                          p("Eads and others use a more supervised method for filtering their corpus.  We adapt this to our abstract data.
+                                            The method uses LDA topic modeling in combination with a keyword list in order to identify topics about AI in
+                                            a corpus whether they directly mention the keywords or not. Before topic modeling, we filter our data to only
+                                            include projects produced by the NSF, and within the subject area of Computer and Information Science and Engineering.
+                                            We do this to have a more narrow corpus in hopes to increase the AI presence within the data.  After filtering, we have
+                                            about 16,000 grant abstracts.  We found that an LDA topic model with 100 topics gave us several topics about AI. As an intital
+                                            keyword list, we use the AI core terms identified by the OECD paper (ref?), and extend this with the most common words used in
+                                            the AI-related topics identified by our topic model."),
+                                          p("After obtaining the AI-related topics and keyword list, we used the /wheat_filtration/ package made available by Eads et al. to 
+                                            filter the overall corpus to those related to AI.")),
                                    column(8,
-                                          h4(strong("Map of Resident Socioeconomic Characteristics by Census Tract or Block Group")),
-                                          tabsetPanel(
-                                            tabPanel("Older Adult Characteristics",
-                                                     p(""),
-                                                     column(6,
-                                                            selectInput("olddrop", "1. Select Variable:", width = "100%", choices = c(
-                                                              "Percent with Vision Difficulty" = "visdiff",
-                                                              "Percent with Ambulatory Difficulty" = "ambdiff",
-                                                              "Percent with Self-Care Difficulty" = "carediff",
-                                                              "Percent with Cognitive Difficulty" = "cogdiff",
-                                                              "Percent with Independent Living Difficulty" = "ildiff",
-                                                              "Percent with Any Disability" = "disab",
-                                                              "Percent in Poverty" = "inpov",
-                                                              "Percent in Labor Force" = "labfor")
-                                                            )),
-                                                     column(6,
-                                                            selectInput("oldspecdrop", "2. Select Group:", width = "100%", choices = c(
-                                                              "Total",
-                                                              "Female" = "_f",
-                                                              "Male" = "_m")
-                                                            )),
-                                                   #  withSpinner(leafletOutput("oldplot")),
-                                                     p(tags$small("Data Source: American Community Survey 2014/18 5-Year Estimates."))
-                                            ),
-                                            tabPanel("Older Adult Household Characteristics",
-                                                     p(""),
-                                                     selectInput("hhdrop", "Select Variable:", width = "100%", choices = c(
-                                                       "Percent Married Couple Households with one or more 60+ Member" = "hhsixty_married",
-                                                       "Percent Households with one or more 60+ Members" = "hhsixty_total",
-                                                       "Percent Single (no partner present) Households with one or more 60+ Member" = "hhsixty_nonfam",
-                                                       "Percent Households with one or more Male 60+ Members" = "hhsixty_mhh",
-                                                       "Households with one or more Female 60+ Members" = "hhsixty_fhh")),
-                                                    # withSpinner(leafletOutput("householdplot")),
-                                                     p(tags$small("Data Source: American Community Survey 2014/18 5-Year Estimates."))
-                                            )
+                                          h4(strong("NMF Topic Modeling Results")),
+                                          tabPanel("Title",
+                                                   p(""),
+                                                   column(6,
+                                                          selectInput("olddrop", "1. Select Variable:", width = "100%", choices = c(
+                                                            "Percent with Vision Difficulty" = "visdiff",
+                                                            "Percent with Ambulatory Difficulty" = "ambdiff",
+                                                            "Percent with Self-Care Difficulty" = "carediff",
+                                                            "Percent with Cognitive Difficulty" = "cogdiff",
+                                                            "Percent with Independent Living Difficulty" = "ildiff",
+                                                            "Percent with Any Disability" = "disab",
+                                                            "Percent in Poverty" = "inpov",
+                                                            "Percent in Labor Force" = "labfor")
+                                                          )),
+                                                   withSpinner(leafletOutput("oldplot")),
+                                                   p(tags$small("Data Source: Federal RePORTER abstracts."))
+                                                   
                                           )
                                    )
                                           )
-                          ),
+                 ),
                  # Method 3. Bert, Crystal -----------------------------------------------------------
                  tabPanel("Filtering Method 3. Embedding", value = "socio",
                           fluidRow(style = "margin: 6px;",
