@@ -103,7 +103,13 @@ ui <- navbarPage(title = "RnD",
                                           h4(strong("Data")),
                                           p("We examined research projects abstracts within the", a(href = "https://federalreporter.nih.gov/", "Federal RePORTER.", target = "_blank")),
                                           p("The Federal RePORTER is a database of federally funded science research projects. The database provides information on projects, including supporting
-                                            agencies, starting dates, project terms, and abstracts. Our dataset consisted all 690814 project abstracts that began within the years of 2009-2018.")),
+                                            agencies, starting dates, project terms, and abstracts. Our dataset consisted all 690814 project abstracts that began within the years of 2009-2018."),
+                                          p(""),
+                                          img(src = "all_data_agency.png", style = "display:  center; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;"),
+                                          p(""),
+                                          img(src = "all_data_start_year.png", style = "display:  center; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;")
+                                          
+                                          ),
                                    column(5,
                                           h4(strong("Methodology")),
                                           fluidRow( style = "margin: 6px;",
