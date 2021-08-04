@@ -23,7 +23,7 @@ library(gt)
 ```{r}
 
 uva_colors <- c("#232d4b","#2c4f6b","#0e879c","#60999a","#d1e0bf","#d9e12b","#e6ce3a","#e6a01d","#e57200","#fdfdfd")
-abstracts <- readRDS("/Users/czang/Documents/UVA/2021DSPG/CrystalCode/dspg21RnD/shiny/data_shiny/abstracts.rds")
+abstracts_gather <- readRDS("/home/zz3hs/git/dspg21RnD/shiny/data_shiny/abstracts_gather.rds")
 ```
 
 ```{r}
@@ -58,7 +58,7 @@ agency <- abstracts_gather %>%
   group_by(DEPARTMENT, method) %>% 
   count()
 
-png("www/all_agency.png", width = 1000, height = 600, res = 150)
+png("/home/zz3hs/git/dspg21RnD/shiny/www/all_agency.png", width = 1000, height = 600, res = 150)
 
 ggplot(agency, aes(x= reorder(DEPARTMENT, (n)), y=n))+
   geom_bar(stat='identity', position = "dodge", aes(fill = agency$method))+
