@@ -324,12 +324,12 @@ ui <- navbarPage(title = "RnD",
                                           h4(strong("Topic Modeling Results")),
                                           tabsetPanel(
                                             tabPanel("Funding Sources",
-                                                     plotOutput("eads_agency"),
-                                                     plotOutput("eads_year")
+                                                     plotOutput("eads_agency.png"),
+                                                     plotOutput("eads_start_year.png")
                                             ),
                                             tabPanel("NMF Model Fitting",
                                                      p("Number of topics = # achieved the highest coherence with topics. Thus we based on the coherence model, 10 is the optimal number of topics."),
-                                                     img(src = "nmf_fitting_bert.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
+                                                     img(src = "nmf_fitting_eads.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
                                             ),
                                             tabPanel("Emerging Topics",
                                                      p(""),
