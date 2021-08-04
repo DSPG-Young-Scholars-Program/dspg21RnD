@@ -23,8 +23,9 @@ colors <- c("#232d4b","#2c4f6b","#0e879c","#60999a","#d1e0bf","#d9e12b","#e6ce3a
 # data -----------------------------------------------------------
 abstracts_gather  = readRDS("data_shiny/abstracts_gather.rds")
 
+
 # user -------------------------------------------------------------
-ui <- navbarPage(title = "RnD",
+ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' style='margin-top:-10px;'/>"),
                  selected = "overview",
                  theme = shinytheme("lumen"),
                  tags$head(tags$style('.selectize-dropdown {z-index: 10000}')),
