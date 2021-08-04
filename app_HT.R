@@ -321,22 +321,41 @@ ui <- navbarPage(title = "RnD",
                                           p("After obtaining the AI-related topics and keyword list, we used the /wheat_filtration/ package made available by Eads et al. to 
                                             filter the overall corpus to those related to AI.")),
                                    column(8,
-                                          h4(strong("NMF Topic Modeling Results")),
-                                          tabPanel("Title",
-                                                   p(""),
-                                                   column(6,
-                                                          selectInput("olddrop", "1. Select Variable:", width = "100%", choices = c(
-                                                            "Percent with Vision Difficulty" = "visdiff",
-                                                            "Percent with Ambulatory Difficulty" = "ambdiff",
-                                                            "Percent with Self-Care Difficulty" = "carediff",
-                                                            "Percent with Cognitive Difficulty" = "cogdiff",
-                                                            "Percent with Independent Living Difficulty" = "ildiff",
-                                                            "Percent with Any Disability" = "disab",
-                                                            "Percent in Poverty" = "inpov",
-                                                            "Percent in Labor Force" = "labfor")
-                                                          )),
-                                                   p(tags$small("Data Source: Federal RePORTER abstracts."))
-                                                   
+                                          h4(strong("Topic Modeling Results")),
+                                          tabsetPanel(
+                                            tabPanel("Funding Sources",
+                                                     plotOutput("eads_agency"),
+                                                     plotOutput("eads_year")
+                                            ),
+                                            tabPanel("NMF Model Fitting",
+                                                     p("Number of topics = # achieved the highest coherence with topics. Thus we based on the coherence model, 10 is the optimal number of topics."),
+                                                     img(src = "nmf_fitting_bert.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
+                                            ),
+                                            tabPanel("Emerging Topics",
+                                                     p(""),
+                                                     p("Our interactive plots visualize the hot and cold topics among identified AI-related abstracts."),
+                                                     
+                                                     selectInput(
+                                                       inputId = "k", 
+                                                       label = "Select Number of Topics:",
+                                                       width = "50%", 
+                                                       choices = c('10 Topics', '20 Topics', '30 Topics'),
+                                                       selected = '10 Topics'
+                                                     ),
+                                                     conditionalPanel("input.k == '10 Topics'",
+                                                                      img(src = "eads_10_topic_trends.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
+                                                     ),
+                                                     conditionalPanel("input.k == '20 Topics'",
+                                                                      img(src = "eads_20_topic_trends.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
+                                                     ),
+                                                     conditionalPanel("input.k == '30 Topics'",
+                                                                      img(src = "eads_30_topic_trends.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
+                                                     ),
+                                                     p("Takeaways here"),
+                                                     p(""),
+                                                     p("")
+                                                     
+                                            )
                                           )
                                    )
                                           )
