@@ -147,15 +147,17 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                  # Tab3. Method 1. OECD, Cierra -----------------------------------------------------------
                  tabPanel(id= "m1","Filtering Method 1. OECD", value = "socio",
                           fluidRow(style = "margin: 6px;",
-                                   h1(strong("Term matching"), align = "center"),
+                                   h1(strong("OECD Term Matching Approach"), align = "center"),
                                    p("", style = "padding-top:10px;"),
-                                   column(4,
-                                          h4(strong("OECD Terms")),
+                                   column(4, #style = "border-right: 2px solid navy; padding: 10px 5px 5px 5px",
+                                          h3(strong("Method")),
                                           p("To filter the corpus for AI, we used the method in [1] by the", a(href = "https://www.oecd.org/unitedstates/", "Organization for Economic Co-operation and Development", target = "_blank"), "(OECD).
-                                            OECD created a list of key terms which are broken into 2 groups: core terms and non-core terms.", strong(" A document
-                                            is considered AI-related if its abstract contains at least one core term or two non-core terms.")),
-                                          h5(strong("Core Terms: unambiguously related to AI")),
-                                          wellPanel(id="tPanel",style="overflow-y:scroll; max-height: 200px; background: lightgray",
+                                            OECD created a list of key terms which are broken into two groups: core terms and non-core terms."), 
+                                          br(),
+                                          h4(strong(" A document is considered AI-related if its abstract contains at least one core term or two non-core terms."), style = "border: 2px solid navy; padding: 5px 5px 5px 5px"),
+                                          br(),
+                                          h4(strong("Core Terms: unambiguously related to AI"), style = "border: 2px solid navy; padding: 5px 5px 5px 5px"),
+                                          wellPanel(id="tPanel",style="overflow-y:scroll; max-height: 200px", # ; background: lightgray",
                                                     tags$ul(tags$li("adaboost"),
                                                             tags$li("artificial intelligence"),
                                                             tags$li("artificial neural network"),
@@ -188,8 +190,9 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                                                             tags$li("support vector machine"),
                                                             tags$li("svm classifier"),
                                                             tags$li("unsupervised learn"))),
-                                          h5(strong("Non-core Terms: could be related to AI or another discipline")),
-                                          wellPanel(id="tPanel",style="overflow-y:scroll; max-height: 200px; background: lightgray",
+                                          br(),
+                                          h4(strong("Non-core Terms: could be related to AI or another discipline"), style = "border: 2px solid navy; padding: 5px 5px 5px 5px"),
+                                          wellPanel(id="tPanel",style="overflow-y:scroll; max-height: 200px", #; background: lightgray",
                                                     tags$ul(tags$li("actor critic"),
                                                             tags$li("analog vlsi"),
                                                             tags$li("associative memory"),
@@ -255,15 +258,16 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                                                             tags$li("word sense disambiguation"))),
                                           p(tags$small("[1] OECD. (2019). Identifying government funding of AI-related R&D projects - An initial exploration based on US NIH and NSF project funding data.  Directorate for Science, Technology, and Innovation and Committee for Scientific and Technological Policy. Organization for Economic Co-operation and Development (OECD). Paris, France."))),
               
+                                   
                                    column(8,
-                                          h3(strong("Term Matching Results")),
-                                          p("In total, 7933 projects are classified as AI related with this method."),
+                                          h3(strong("Results")),
+                                          h4(strong("In total, 7933 projects are classified as AI related with this method.")),
                                           tabsetPanel(id= "m1tabs",
                                             tabPanel(id= "m1.1","Funding Sources",
                                                     p(""),
-                                                  img(src = "oecd_agency.png", style = "style=display: block; margin-left: auto; margin-right: auto;"),
+                                                  img(src = "oecd_agency.png",  style = "display:  block; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;", width = "450px"), #style = "display:  center; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;"), 
                                                   p(""),
-                                                  img(src = "oecd_start_year.png", style = "style=display: block; margin-left: auto; margin-right: auto;")
+                                                  img(src = "oecd_start_year.png",  style = "display:  block; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;", width = "450px") #style = "display:  center; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;") 
 
                                             ),
                                             tabPanel(id= "m1.2","NMF Model Fitting",
@@ -273,11 +277,11 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                                             ),
                                             tabPanel(id= "m1.3","Emerging Topics",
                                                      p(""),
-                                                     p("Our interactive plots visualize the hot and cold topics among identified AI-related abstracts."),
+                                                     p("Our interactive plots visualize the topic trends among identified AI-related abstracts."),
                                                      
                                                      tags$ul(
                                                        tags$li(strong("Mean Topic Weight"), " measures how much a topic is represented in our set of documents"), 
-                                                       tags$li("The ", strong("n"), " value for each topic describes the number of documents with a mean topic weight above 0. In other words, n is the number of documents on the specific topic.")
+                                                       tags$li("The ", strong("n"), " value for each topic describes the number of documents with a mean topic weight above 0. In other words, n is the number of documents containing the specific topic.")
                                                      ),
                                                      
                                                      selectInput(
@@ -296,12 +300,15 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                                                      conditionalPanel("input.k == '30 Topics'",
                                                                       img(src = "oecd_30_topic_trends.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
                                                      ),
-                                                     h6(strong("Takeaways:")),
-                                                     tags$ul(
-                                                       tags$li("Machine Learning (topic 2) and Robotics (topic 3) were among the topics with the most ",strong("increasing"), " mean topic weight."), 
-                                                       tags$li("Machine Learning (topic 2) has the ", strong("highest n value")," indicating that a number of abstracts may mention or describe applications of machine learning."), 
-                                                       tags$li("Some topics, like Document Retrieval (topic 13) were decreasing in mean topic weight, despite having a high n value."), 
-                                                       tags$li("Computational Biology (topic 19) and Network Communication (topic 20) were among the topics with the most " ,strong("decreasing"), " mean topic weight.")
+                                                     br(),
+                                                     fluidRow(style = "border: 2px solid navy; padding: 5px 5px 5px 5px",
+                                                       h4(strong("Takeaways:")),
+                                                       tags$ul(
+                                                        tags$li("Machine Learning (topic 2) and Robotics (topic 3) were among the topics with the most ",strong("increasing"), " mean topic weight."), 
+                                                        tags$li("Machine Learning (topic 2) has the ", strong("highest n value")," indicating that a number of abstracts may mention or describe applications of machine learning."), 
+                                                        tags$li("Some topics, like Document Retrieval (topic 13) were decreasing in mean topic weight, despite having a high n value."), 
+                                                        tags$li("Computational Biology (topic 19) and Network Communication (topic 20) were among the topics with the most " ,strong("decreasing"), " mean topic weight.")
+                                                        )
                                                      )
                                                      
                                             )
@@ -312,12 +319,12 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
 
 
                 # Method 2. Term Matching + LDA, Haleigh -----------------------------------------------------------
-                tabPanel("Filtering Method 2. Term Matching + LDA", value = "socio",
+                tabPanel("Filtering Method 2. LDA + Term Matching", value = "socio",
                          fluidRow(style = "margin: 6px;",
-                                  h1(strong("Term matching + LDA"), align = "center"),
+                                  h1(strong("LDA and Term Matching Approach"), align = "center"),
                                   p("", style = "padding-top:10px;"),
                                   column(4,
-                                         h4(strong("Method Borrowed from Eads and others")),
+                                         h3(strong("Method")),
                                          p("This method uses a combination of term matching and LDA in order to filter to AI-related grant abstracts."),
                                          p("Eads and others use a more supervised method for filtering their corpus.  We adapt this to our abstract data.
                                             The method uses LDA topic modeling in combination with a keyword list in order to identify topics about AI in
@@ -328,30 +335,32 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                                             keyword list, we use the AI core terms identified by the OECD paper (ref?), and extend this with the most common words used in
                                             the AI-related topics identified by our topic model."),
                                          p("After obtaining the AI-related topics and keyword list, we used the /wheat_filtration/ package made available by Eads et al. to
-                                            filter the overall corpus to those related to AI.")),
+                                            filter the overall corpus to those related to AI."),
+                                         p(tags$small("[2] Eads, A., Schofield, A., Mahootian, F., Mimno, D., & Wilderom, R. (2021). Separating the wheat from the chaff: A topic and keyword-based procedure for identifying research-relevant text. Poetics, 86 (Article 101527)."))
+                                         ),
                                   column(8,
-                                         h3(strong("Topic Modeling Results")),
-                                         p("In total, 12694 projects are classified as AI related with this method."),
+                                         h3(strong("Results")),
+                                         h4(strong("In total, 12694 projects are classified as AI related with this method.")),
                                          tabsetPanel(
                                            tabPanel("Funding Sources",
-                                                    p(""),
-                                                    img(src = "eads_agency.png", style = "display:  center; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;"),
-                                                    p(""),
-                                                    img(src = "eads_start_year.png", style = "display:  center; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;")
+                                                    br(),
+                                                    img(src = "eads_agency.png", style = "display:  block; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;", width = "450px"),  #style = "display:  center; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;"),
+                                                    br(),
+                                                    img(src = "eads_start_year.png",  style = "display:  block; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;", width = "450px") #style = "display:  center; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;")
 
                                            ),
                                            tabPanel("NMF Model Fitting",
                                                     p(""),
-                                                    p(strong("Number of topics = 15 "), "achieved the highest coherence with topics. Thus we based on the coherence model, 15 is the optimal number of topics."),
-                                                    img(src = "nmf_fitting_eads.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
+                                                    p(strong("Number of topics = 15 "), "achieved the highest coherence with topics. Based on the coherence model, 15 is the optimal number of topics."),
+                                                    img(src = "nmf_fitting_eads.png",  style = "display:  block; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;", width = "600px") #style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
                                            ),
                                            tabPanel("Emerging Topics",
                                                     p(""),
-                                                    p("Our interactive plots visualize the hot and cold topics among identified AI-related abstracts."),
+                                                    p("Our interactive plots visualize the topic trends among identified AI-related abstracts."),
 
                                                     tags$ul(
                                                       tags$li(strong("Mean Topic Weight"), " measures how much a topic is represented in our set of documents"), 
-                                                      tags$li("The ", strong("n"), " value for each topic describes the number of documents with a mean topic weight above 0. In other words, n is the number of documents on the specific topic.")
+                                                      tags$li("The ", strong("n"), " value for each topic describes the number of documents with a mean topic weight above 0. In other words, n is the number of documents containing the specific topic.")
                                                     ),
                                                     selectInput(
                                                       inputId = "k2",
@@ -372,13 +381,15 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                                                     conditionalPanel("input.k2 == '30 Topics'",
                                                                      img(src = "eads_30_topic_trends.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
                                                     ),
-                                                    p(""),
-                                                    h6(strong("Takeaways:")),
-                                                    tags$ul(
-                                                      tags$li("Network Analysis (Topic 2)  and Robotics (Topic 4) are among the topics with a positive relationship between mean topic weight and the years in our data, meaning that they are emerging topics in our corpus."), 
-                                                      tags$li("Speech Recognition (Topic 15) is decreasing the most over time."), 
-                                                      tags$li("Despite decreasing mean topic weights, some topics still have a large presence in our AI corpus.  For example, see Topic 9 which has a decreasing trend over time, yet contains abstracts than Topic 1, which has the steepest positive slope."), 
-                                                      tags$li("Topic 7 has the most abstracts and lists the words 'statistical', 'algorithm', and 'theory', and has a fairly flat trend over time.  It is possible that many documents reference these terms in their methods.")
+                                                    br(),
+                                                    fluidRow(style = "border: 2px solid navy; padding: 5px 5px 5px 5px",
+                                                      h4(strong("Takeaways:")),
+                                                      tags$ul(
+                                                        tags$li("Network Analysis (Topic 2)  and Robotics (Topic 4) are among the topics with a positive relationship between mean topic weight and the years in our data, meaning that they are emerging topics in our corpus."), 
+                                                        tags$li("Speech Recognition (Topic 15) is decreasing the most over time."), 
+                                                        tags$li("Despite decreasing mean topic weights, some topics still have a large presence in our AI corpus.  For example, see Topic 9 which has a decreasing trend over time, yet contains abstracts than Topic 1, which has the steepest positive slope."), 
+                                                        tags$li("Topic 7 has the most abstracts and lists the words 'statistical', 'algorithm', and 'theory', and has a fairly flat trend over time.  It is possible that many documents reference these terms in their methods.")
+                                                      )
                                                     )
 
                                            )
@@ -419,31 +430,31 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
 
 
                                    column(8,
-                                          h3(strong("Topic Modeling Results")),
+                                          h3(strong("Results")),
 
-                                          p("In total, 7658 projects are classified as AI related with this method."),
+                                          h4(strong("In total, 7658 projects are classified as AI related with this method.")),
 
                                           tabsetPanel(
                                             tabPanel("Funding Sources",
-                                                      p(""),
-                                                      img(src = "bert_agency.png", style = "display:  center; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;"),
-                                                      p(""),
-                                                      img(src = "bert_start_year.png", style = "display:  center; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;")
+                                                      br(),
+                                                      img(src = "bert_agency.png",  style = "display:  block; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;", width = "450px"), #style = "display:  center; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;"),
+                                                      br(),
+                                                      img(src = "bert_start_year.png",  style = "display:  block; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;", width = "450px") #style = "display:  center; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;")
 
 
                                             ),
                                             tabPanel("NMF Model Fitting",
                                                      p(""),
-                                                     p(strong("Number of topics = 10")," achieved the highest coherence with topics. Thus we based on the coherence model, 10 is the optimal number of topics."),
-                                                     img(src = "nmf_fitting_bert.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
+                                                     p(strong("Number of topics = 10")," achieved the highest coherence with topics. Based on the coherence model, 10 is the optimal number of topics."),
+                                                     img(src = "nmf_fitting_bert.png",  style = "display:  block; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;", width = "600px") #style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
                                             ),
                                             tabPanel("Emerging Topics",
                                                      p(""),
-                                                     p("Our interactive plots visualize the hot and cold topics among identified AI-related abstracts."),
+                                                     p("Our interactive plots visualize the topic trends among identified AI-related abstracts."),
 
                                                      tags$ul(
                                                        tags$li(strong("Mean Topic Weight"), " measures how much a topic is represented in our set of documents"), 
-                                                       tags$li("The ", strong("n"), " value for each topic describes the number of documents with a mean topic weight above 0. In other words, n is the number of documents on the specific topic.")
+                                                       tags$li("The ", strong("n"), " value for each topic describes the number of documents with a mean topic weight above 0. In other words, n is the number of documents containing the specific topic.")
                                                      ),
                                                      selectInput(
                                                        inputId = "k3",
@@ -461,13 +472,15 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                                                      conditionalPanel("input.k3 == '30 Topics'",
                                                                       img(src = "bert_trends_30topics.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
                                                      ),
-                                                     p(""),
-                                                     h6(strong("Takeaways:")),
-                                                     tags$ul(
+                                                     br(),
+                                                     fluidRow(style = "border: 2px solid navy; padding: 5px 5px 5px 5px",
+                                                      h4(strong("Takeaways:")),
+                                                      tags$ul(
                                                        tags$li("Predictive medicine (topic 2) and image recognition (topic 5) were among the topics with the most increasing mean topic weight."), 
                                                        tags$li("Innovative social science (topic 8), user interaction (topic 16), algorithm (topic 12), and statistics inference (topic 19) have the highest n value indicating that a number of abstracts may mention or describe applications of machine learning."), 
                                                        tags$li("Neural network(topic 20) and statistical inference (topic 19) were among the topics with the most decreasing mean topic weight.")
                                                       )
+                                                     )
                                                      
 
                                             )
