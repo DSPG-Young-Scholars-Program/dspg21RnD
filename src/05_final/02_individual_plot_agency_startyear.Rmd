@@ -16,8 +16,9 @@ knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
 library(ggplot2)
 library(readr)
-setwd("~/git/dspg21RnD/shiny")
-getwd()
+library(tidyr)
+#setwd("~/git/dspg21RnD/shiny")
+#getwd()
 ```
 
 
@@ -25,28 +26,24 @@ getwd()
 
 ```{r}
 uva_colors <- c("#232d4b","#2c4f6b","#0e879c","#60999a","#d1e0bf","#d9e12b","#e6ce3a","#e6a01d","#e57200","#fdfdfd")
-abstracts <- readRDS("~/git/dspg21RnD/shiny/data_shiny/abstracts_shiny.rds")
 abstracts_gather<- readRDS("~/git/dspg21RnD/shiny/data_shiny/abstracts_gather.rds")
 
+setwd("/home/zz3hs/git/dspg21RnD/shiny/")
+# all abstracts
+abstracts_all <- read_csv("git/dspg21RnD/data/dspg21RnD/abstracts_all.csv")
 
-abstracts_all <- read_csv("~/git/dspg21RnD/data/dspg21RnD/abstracts_all.csv")
 ```
 
-
-
+#check number of na departments for each method
 ```{r}
-# Eads_AI_abstracts_KL <- read_csv("~/git/dspg21RnD/data/dspg21RnD/Eads_AI_abstracts-KL.csv")
-# 
-# Eads_AI_abstracts_KL <- Eads_AI_abstracts_KL%>%
-#   select(PROJECT_ID, is_ai_eads)
-# 
-# abstracts <- abstracts%>%
-#   full_join(Eads_AI_abstracts_KL, by= "PROJECT_ID")
-# 
-# abstracts[c("IS_AI_OECD", "IS_AI_BERT", "is_ai_eads")][is.na(abstracts[c("IS_AI_OECD", "IS_AI_BERT", "is_ai_eads")])] <- FALSE
-# 
-# sum()
+abstracts_gather%>%
+  group_by(method)%>%
+  mutate(DEPARTMENT_IS_NA = ifelse(is.na(DEPARTMENT), T, F))%>%
+  group_by(method)%>%
+  summarize(N= sum(DEPARTMENT_IS_NA))
 ```
+
+
 
 #all abstracts
 ```{r}
@@ -78,7 +75,7 @@ png("www/all_data_start_year.png", width = 500, height = 300)
 abstracts_all %>% 
   mutate(d=as.Date(PROJECT_START_DATE, format="%m/%d/%Y")) %>% 
   mutate(d=format(d,"%Y")) %>% 
-  filter(d<"2019") %>% 
+  filter(d< "2020") %>% 
   filter(d> "2007")%>%
   group_by(d) %>% 
   count() %>% 
@@ -96,8 +93,8 @@ dev.off()
 
 # OECD
 ```{r}
-abstracts_method <- abstracts %>% 
-  filter(IS_AI_OECD == T)
+abstracts_method <- abstracts_gather %>% 
+  filter(method  == "Term Matching")
 
 ```
 
@@ -108,7 +105,7 @@ agency <- abstracts_method %>%
   group_by(DEPARTMENT) %>% 
   count()
 
-png("www/oecd_agency.png", width = 500, height = 300)
+png("/home/zz3hs/git/dspg21RnD/shiny/www/oecd_agency.png", width = 500, height = 300)
 
 ggplot(agency, aes(x= reorder(DEPARTMENT, (n)), y=n))+
   geom_bar(stat='identity', fill = uva_colors[3])+
@@ -122,28 +119,6 @@ ggplot(agency, aes(x= reorder(DEPARTMENT, (n)), y=n))+
 
 
 ```
-
-```{r}
-png("www/oecd_agency.png", width = 500, height = 300)
-abstracts_method %>% 
-  mutate(d=as.Date(PROJECT_START_DATE, format="%m/%d/%Y")) %>% 
-  mutate(d=format(d,"%Y")) %>% 
-  filter(d<"2019") %>% 
-  filter(d> "2007")%>%
-  group_by(d) %>% 
-  count() %>% 
-  ggplot(aes(x=d, y=n))+
-  geom_bar(stat='identity', fill  = uva_colors[3])+
-  theme_minimal()+
-  theme(axis.text.x=element_text(angle=90))+
-  labs(title = "Start Year of Projects Related to Artificial intelligence", x = "Start Year", y = "Number of Abstracts")+
-  theme(plot.title = element_text(size=13), 
-        axis.text = element_text(size = 10), 
-        axis.title = element_text(size = 12))
-
-dev.off()
-```
-
 
 ```{r}
 png("www/oecd_start_year.png", width = 500, height = 300)
@@ -167,24 +142,22 @@ dev.off()
 ```
 
 
-
 # EADS
 ```{r}
+abstracts_method <-abstracts_gather%>%
+ filter(method == "Term Matching + \n Topic Modeling")
 # abstracts_method <- abstracts %>% 
 #   filter(is_ai_eads == T)
-abstracts_method <- abstracts_gather %>% 
-  filter(method == "Term Matching + \n Topic Modeling")
+#abstracts_method <- abstracts_gather %>% 
+#  filter(method == "Term Matching + \n Topic Modeling")
 ```
 
 
 ```{r}
 agency <- abstracts_method %>%
-  #filter(!is.na(DEPARTMENT))%>% 
+  filter(!is.na(DEPARTMENT))%>% 
   group_by(DEPARTMENT) %>% 
   count()
-
-abstracts_method_na <- abstracts_method%>%
-  filter(is.na(DEPARTMENT))
 
 png("www/eads_agency.png", width = 500, height = 300)
 
@@ -227,8 +200,8 @@ dev.off()
 
 # BERT
 ```{r}
-abstracts_method <- abstracts %>% 
-  filter(IS_AI_BERT == T)
+abstracts_method <- abstracts_gather %>% 
+  filter(method == "BERT")
 
 ```
 
