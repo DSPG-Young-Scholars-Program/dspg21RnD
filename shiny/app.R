@@ -70,23 +70,26 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                           fluidRow(style = "margin: 6px;",
                                    column(6,
                                           h2(strong("Project Background")),
-                                          p( strong("The project"), "This project implemented and explored several information retrieval/corpus filtering method to identify Federal RePORTER project abstracts that are related to Artificial Intelligence (AI).
-                                             The research builds upon an ongoing collaboration between the UVA Biocomplexity Institute Social and Decision Analytics Division (SDAD) and the National Center for Science and Engineering
-                                             Statistics (NCSES) examining the use of administrative records to supplement or enhance data collected in NCSES surveys. Key components of our work include:
-                                             (1) filtering abstracts for AI and (2) Identify emerging topics within AI grant abstracts."),
+                                          p( strong("The project"), 
+                                             "The research builds upon an ongoing collaboration between the UVA Biocomplexity Institute Social and Decision Analytics Division (SDAD) and the National Center for Science and Engineering
+                                             Statistics (NCSES) examining the use of administrative records to supplement or enhance data collected in NCSES surveys."),
                                           p(strong("Past study"), "This project is a continuation of last year's project:", a(href = "https://dspgtools.shinyapps.io/RnD-Emerging-Topics/", "R&D Abstracts: Emerging Topic Identification", target = "_blank"),
                                             ". Abstracts were cleaned and pre-processed through tokenization and lemmatization, stop word removal, and n-grams creation.")
 
                                           ),
                                    column(6,
+                                          h2(strong("Research Question")),
+                                          p("How can we identify emerging topics within a particular concept in a corpus? For example, what are the emerging topics in the area of Artificial Intelligence (AI) within Federal RePORTER?"),
+                                          p("What is the trade-off between automatic processes and those that require human intervention to accomplish the first task? "),
                                           h2(strong("Our Work")),
                                           p("AI is a complex and hard to define theme, so this filtering problem is challenging.
-                                            We utilized three different filtering methods:"),
-                                         # tags$li("An AI term matching method proposed by the Organization for Economic Co-operation and Development (OECD)"),
-                                         # tags$li("A method by Eads et al., which utilizes term matching and topic modeling"),
-                                         # tags$li("a Sentence BERT (bidirectional encoder representations from transformers) method that compares the similarity between the AI Wikipedia page and each grant abstract."),
+                                            This project implemented and explored three  information retrieval/corpus filtering method to
+                                            identify Federal RePORTER project abstracts that are related to AI:"),
+                                          tags$li(strong("Term Matching Filtering Method"), ", proposed by the Organization for Economic Co-operation and Development (OECD)."),
+                                          tags$li(strong("Term Matching + Latent Dirichlet Allocation (LDA)"), ", proposed by Eads and others."),
+                                          tags$li(strong("Sentence BERT Embeddings"), "that compares the similarity between the AI Wikipedia page and grant abstract."),
 
-                                          p(),
+                                          p("After retrieving abstracts that are related to AI, we performed topic modeling and identified some merging topics within the field of AI."),
                                           p("This dashboard compiles our findings and allows extension professionals, stakeholders, and other users to explore the information interactively.")
                                           )
                                    ),
@@ -104,7 +107,7 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                                           h4(strong("Data")),
                                           p("We examined research projects abstracts within the", a(href = "https://federalreporter.nih.gov/", "Federal RePORTER.", target = "_blank")),
                                           p("The Federal RePORTER is a database of federally funded science research projects. The database provides information on projects, including supporting
-                                            agencies, starting dates, project terms, and abstracts. Our dataset consisted all 690814 project abstracts that began within the years of 2009-2018."),
+                                            agencies, starting dates, project terms, and abstracts. Our dataset consisted all 690814 project abstracts that began within the years of 2008-2019."),
                                           p(""),
                                           img(src = "all_data_agency.png", style = "display:  center; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;"),
                                           p(""),
@@ -145,7 +148,7 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                                    )
                           ),
                  # Tab3. Method 1. OECD, Cierra -----------------------------------------------------------
-                 tabPanel(id= "m1","Filtering Method 1. OECD", value = "socio",
+                 tabPanel("Filtering Method 1. Term Matching", value = "socio",
                           fluidRow(style = "margin: 6px;",
                                    h1(strong("OECD Term Matching Approach"), align = "center"),
                                    p("", style = "padding-top:10px;"),
@@ -319,7 +322,7 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
 
 
                 # Method 2. Term Matching + LDA, Haleigh -----------------------------------------------------------
-                tabPanel("Filtering Method 2. LDA + Term Matching", value = "socio",
+                tabPanel("Filtering Method 2. Term Matching + LDA", value = "socio",
                          fluidRow(style = "margin: 6px;",
                                   h1(strong("LDA and Term Matching Approach"), align = "center"),
                                   p("", style = "padding-top:10px;"),
@@ -409,22 +412,48 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                                             We believe that Wikipedia of AI provides an accurate description of what AI is and a thorough list of subfields of AI. "),
                                           h4(strong("Sentence Embedding")),
                                           p("Sentence embedding is a type of representation that allows sentences with similar meaning to have a similar representation. Bidirectional Encoder Representations from Transformers (BERT),
-                                          is a transformer-based machine learning technique for natural language processing (NLP) pre-training developed by Google. Sentence-BERT (SBERT), proposed by Reimers and Gurevych, is a modification
+                                          is a transformer-based machine learning technique for natural language processing (NLP) pre-training developed by Google. Sentence-BERT (SBERT) [3], is a modification
                                           of the pretrained BERT use network structures to derive semantically meaningful sentence embeddings."),
 
                                           p("We computed sentence embeddings using", a(href = "https://www.sbert.net/", "SBERT", target = "_blank"),  "We used a pre-trained model",
-                                            a(href = "https://www.sbert.net/docs/pretrained_models.html", " paraphrase-mpnet-base-v2", target = "_blank"),
-                                            "to embed AI Wiki and Federal RePORTER abstracts. This is the model with the highest quality, but also requires high computational power."),
-
+                                            a(href = "https://www.sbert.net/docs/pretrained_models.html", "paraphrase-MiniLM-L6-v2", target = "_blank"),
+                                            "to embed AI Wiki and Federal RePORTER abstracts. This is a quick model with high quality. There are more accurate pre-trained model, but requires more computating power."),
+                                          column(5, h4(strong("AI Wiki Embedding"), style = "border: 4px solid navy;")),
+                                          column(5, h4(strong("Abstract Embedding"), style = "border: 4px solid navy; ")), br(),
+                                          br(),
+                                          br(),
                                           h4(strong("Cosine Similarity Score")),
-                                          p("Cosine similarity is a measure of similarity between two non-zero vectors. Two same vectors would have a cosine-similarity score of 1, while two independent/perpendicular vectors
+                                          p("Cosine similarity measures the similarity between two non-zero vectors (sentences). Two same vectors would have a cosine-similarity score of 1, while two independent/perpendicular vectors
                                             would have a cosine-similarity score of 0. Higher the score, more similar two sentences are."),
+                                          
 
+                                          
+                                          h5(strong("Example 1.")),
+                                          p("The game of Go is an ancient board game which is considered by-far the most complex
+                                            board game for computer software or artificial intelligence (AI) to solve.", style = "border: 2px solid navy; padding: 5px 5px 5px 5px"),
+                                          
+                                          p("Cosine-similarity score: 0.65"),
+                                          
+                                          h5(strong("Example 2.")),
+                                          p("The multiprotein complex y-secretase proteolytically cleaves the intramembrance of amyloid precursoprotein (APP), which
+                                            in turn forms the plaques found in Alzheimer's disease (AD) patients", style = "border: 2px solid navy; padding: 5px 5px 5px 5px"),
+
+                                          p("Cosine-similarity score: 0.31"),
+                                          
                                           p("We compared the embeddings of AI Wiki to Federal RePORTER abstracts using cosine-similarity. For each sentence in an abstract, we identified the top ten most similar sentences
                                             from our AI corpus and obtained their cosine-similarity scores. We then took the average of these ten scores and call it", strong("abstract similarity score"), ", which reflects how similar the abstract is to AI." ),
-
+                                           
+                                         
+                                          
                                           h4(strong("Choosing a Cutoff Score")),
-                                          p("We classify an abstract with a ", strong("abstract similarity score"), " that is 2.5 standard deviation above the mean as AI related.")),
+                                          p("We classify an abstract with a ", strong("abstract similarity score"), " that is 2.5 standard deviation above the mean as AI related."),
+         
+                                          p(tags$small("[3] Reimers, N., &amp; Gurevych, I. (2019). Sentence-BERT: Sentence EMBEDDINGS using Siamese Bert-Networks.")),
+                                          br(),
+                                          br(),
+                                          br(),
+                                          br()
+                                          ),
 
 
 
@@ -477,8 +506,9 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                                                       h4(strong("Takeaways:")),
                                                       tags$ul(
                                                        tags$li("Predictive medicine (topic 2) and image recognition (topic 5) were among the topics with the most increasing mean topic weight."), 
-                                                       tags$li("Innovative social science (topic 8), user interaction (topic 16), algorithm (topic 12), and statistics inference (topic 19) have the highest n value indicating that a number of abstracts may mention or describe applications of machine learning."), 
-                                                       tags$li("Neural network(topic 20) and statistical inference (topic 19) were among the topics with the most decreasing mean topic weight.")
+                                                       tags$li("Innovative social science (topic 8), user interaction (topic 16) are the topics had most occurance in the documents, indicating that many ai related 
+                                                               abstracts may be the applications of ai."), 
+                                                       tags$li("Neural network(topic 20) is the the most decreasing mean topic weight, but it occured in many documents, indicating it's widely studied.")
                                                       )
                                                      )
                                                      
