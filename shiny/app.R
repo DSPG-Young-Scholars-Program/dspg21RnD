@@ -372,8 +372,13 @@ ui <- navbarPage(title = "RnD",
                                                                      img(src = "eads_30_topic_trends.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
                                                     ),
                                                     p(""),
-                                                    p(""),
-                                                    p("")
+                                                    h6(strong("Takeaways:")),
+                                                    tags$ul(
+                                                      tags$li("Network Analysis (Topic 2)  and Robotics (Topic 4) are among the topics with a positive relationship between mean topic weight and the years in our data, meaning that they are emerging topics in our corpus."), 
+                                                      tags$li("Speech Recognition (Topic 15) is decreasing the most over time."), 
+                                                      tags$li("Despite decreasing mean topic weights, some topics still have a large presence in our AI corpus.  For example, see Topic 9 which has a decreasing trend over time, yet contains abstracts than Topic 1, which has the steepest positive slope."), 
+                                                      tags$li("Topic 7 has the most abstracts and lists the words 'statistical', 'algorithm', and 'theory', and has a fairly flat trend over time.  It is possible that many documents reference these terms in their methods.")
+                                                    )
 
                                            )
                                          )
@@ -444,7 +449,7 @@ ui <- navbarPage(title = "RnD",
                                                        label = "Select Number of Topics:",
                                                        width = "50%",
                                                        choices = c('10 Topics', '20 Topics', '30 Topics'),
-                                                       selected = '10 Topics'
+                                                       selected = '20 Topics'
                                                        ),
                                                      conditionalPanel("input.k3 == '10 Topics'",
                                                        img(src = "bert_trends_10topics.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
@@ -456,8 +461,12 @@ ui <- navbarPage(title = "RnD",
                                                                       img(src = "bert_trends_30topics.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
                                                      ),
                                                      p(""),
-                                                     p(""),
-                                                     p("")
+                                                     h6(strong("Takeaways:")),
+                                                     tags$ul(
+                                                       tags$li("Predictive medicine (topic 2) and image recognition (topic 5) were among the topics with the most increasing mean topic weight."), 
+                                                       tags$li("Innovative social science (topic 8), user interaction (topic 16), algorithm (topic 12), and statistics inference (topic 19) have the highest n value indicating that a number of abstracts may mention or describe applications of machine learning."), 
+                                                       tags$li("Neural network(topic 20) and statistical inference (topic 19) were among the topics with the most decreasing mean topic weight.")
+                                                      )
                                                      
 
                                             )
