@@ -30,69 +30,68 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                  theme = shinytheme("lumen"),
                  tags$head(tags$style('.selectize-dropdown {z-index: 10000}')),
                  useShinyjs(),
-                 # main -----------------------------------------------------------
-                 # tabPanel("Home", value = "home",
-                 #          fluidRow(style = "margin: 6px;",
-                 #                   align = "center",
-                 #                   br("", style = "padding-top:10px;"),
-                 #                   img(src = "uva-dspg-logo.jpg", class = "topimage", width = "20%", style = "display: block; margin-left: auto; margin-right: auto;"),
-                 #                   br(""),
-                 #                   h2(strong("Addressing Barriers to Health in Patrick County, Virginia"),
-                 #                   br(""),
-                 #                   h4("Data Science for the Public Good Program"),
-                 #                   h4("University of Virginia"),
-                 #                   h4("Biocomplexity Insititute"),
-                 #                   br(),
-                 #                   br(),
-                 #                   br(),
-                 #                   br(),
-                 #                   br(),
-                 #                   p(tags$small(em('Last updated: August 2020')))
-                 #                   )
-                 #          )
-                 # ),
 
                  #Tab1. Overview -----------------------------------------------------------
                  tabPanel(id= "overview","Overview", value = "overview",
                           fluidRow(style = "margin: 2px;",
                                    align = "center",
-                                   # br("", style = "padding-top:2px;"),
-                                   # img(src = "uva-dspg-logo.jpg", class = "topimage", width = "20%", style = "display: block; margin-left: auto; margin-right: auto;"),
-                                   br(""),
+                                   # img(src = "uva-dspg-logo.jpg", class = "topimage", width = "20%", style = "display: block; margin-left: auto; margin-right: auto;")
                                    h1(strong("R&D Text Corpora Filtering and Data Mining"),
                                       br(""),
-                                      h4("Data Science for the Public Good Program"),
-                                      h4("University of Virginia"),
-                                      h4("Biocomplexity Insititute"),
+                                      h4(strong("Data Science for the Public Good Program")),
+                                      img(src = "BII_logo.png", width = "250px"),
+                                      #h4("University of Virginia"),
+                                      #h4("Biocomplexity Insititute"),
                                       br()
                                    )
                           ),
                           fluidRow(style = "margin: 6px;",
-                                   column(6,
-                                          h2(strong("Project Background")),
-                                          p( strong("The project"), 
-                                             "The research builds upon an ongoing collaboration between the UVA Biocomplexity Institute Social and Decision Analytics Division (SDAD) and the National Center for Science and Engineering
-                                             Statistics (NCSES) examining the use of administrative records to supplement or enhance data collected in NCSES surveys."),
-                                          p(strong("Past study"), "This project is a continuation of last year's project:", a(href = "https://dspgtools.shinyapps.io/RnD-Emerging-Topics/", "R&D Abstracts: Emerging Topic Identification", target = "_blank"),
-                                            ". Abstracts were cleaned and pre-processed through tokenization and lemmatization, stop word removal, and n-grams creation.")
-
-                                          ),
-                                   column(6,
-                                          h2(strong("Research Question")),
-                                          p("How can we identify emerging topics within a particular concept in a corpus? For example, what are the emerging topics in the area of Artificial Intelligence (AI) within Federal RePORTER?"),
-                                          p("What is the trade-off between automatic processes and those that require human intervention to accomplish the first task? "),
-                                          h2(strong("Our Work")),
-                                          p("AI is a complex and hard to define theme, so this filtering problem is challenging.
-                                            This project implemented and explored three  information retrieval/corpus filtering method to
-                                            identify Federal RePORTER project abstracts that are related to AI:"),
-                                          tags$li(strong("Term Matching Filtering Method"), ", proposed by the Organization for Economic Co-operation and Development (OECD)."),
-                                          tags$li(strong("Term Matching + Latent Dirichlet Allocation (LDA)"), ", proposed by Eads and others."),
-                                          tags$li(strong("Sentence BERT Embeddings"), "that compares the similarity between the AI Wikipedia page and grant abstract."),
-
-                                          p("After retrieving abstracts that are related to AI, we performed topic modeling and identified some merging topics within the field of AI."),
-                                          p("This dashboard compiles our findings and allows extension professionals, stakeholders, and other users to explore the information interactively.")
-                                          )
+                            column(6, style="padding-right:25px",
+                                   h2(strong("Project Background")),
+                                   p("This research builds upon an ongoing collaboration between the UVA Biocomplexity Institute Social and Decision Analytics Division (SDAD) and the National Center for Science and Engineering
+                                             Statistics (NCSES)."),
+                                   img(src = "BII_logo.png", width = "300px", style = "padding-right:50px; padding-left:30px"),
+                                   img(src = "nsf_logo.jpg", width = "100px"),
+                                   img(src = "ncses-logo.png", width = "100px"),
+                                   br(), br(),
+                                   fluidRow(style = "border: 2px solid navy; padding: 5px 5px 5px 5px",
+                                            h4(strong("Overall Goal: what can we learn from administrative data about federally funded research?")),
+                                            p(strong("In this work we examine the use of administrative records to supplement or enhance data collected in NCSES surveys."))
                                    ),
+                                   br(),
+                                   h4(strong("Past Work")),
+                                    p("This project builds upon work from last year's DSPG project:", a(href = "https://dspgtools.shinyapps.io/RnD-Emerging-Topics/", "R&D Abstracts: Emerging Topic Identification", target = "_blank"), ".  Specifically, we utilize the dataset created and some of the methods from last year's DSPG work."),
+
+                                            #". Abstracts were cleaned and pre-processed through tokenization and lemmatization, stop word removal, and n-grams creation.")
+                            ),
+                            column(6, style = "padding-left:25px",
+                                   h2(strong("Research Question")),
+                                   p("In keeping with the overall goal of the work, we have a specific focus for this project."),
+                                   fluidRow(style = "border: 2px solid navy; padding: 5px 5px 5px 5px",
+                                            h4(strong("How can we identify topics and topic trends around a particular theme in federally funded research?")), 
+                                            h4(strong("Specifically, what AI-related topics are present in federally funded research?  What trends do these topics exhibit?"))
+                                   ),
+                                   
+                                  
+                                   h2(strong("Our Work - Brief Introduction")),
+                                   p("We utilize data from Federal RePORTER, a database of federally funded grants, that we cleaned and processed in prior work.  Our problem can be broken down into two main pieces."),
+                                   tags$ol(
+                                     tags$li(strong("Filtering"), ": we filter our data to extract only those projects about AI."),
+                                     tags$li(strong("Topic Modeling"), ": we then run a topic model on our AI-related projects to discover topics and their trends in the area of AI.")
+                                   ),
+
+                                  p("AI is a complex and hard to define theme, so this filtering problem is challenging!  There is no “gold-standard” solution to the filtering problem and we have no ground truth for our data on which projects are related to AI and which are not.
+                                     In this project, we implement and explore three unsupervised filtering methods:"),
+                                  tags$ul( 
+                                  tags$li(strong("Term Matching"), ", as proposed by the Organisation for Economic Co-operation and Development (OECD)."),
+                                   tags$li(strong("Term Matching + Latent Dirichlet Allocation (LDA)"), ", proposed by Eads et al."),
+                                   tags$li(strong("Sentence BERT Embeddings"), ", which compare the similarity between the AI Wikipedia page and federally funded grant abstracts.")
+                                  ),
+                                   p("After retrieving abstracts that are related to AI, we perform topic modeling and identify federally funded topic trends within the field of AI. Future work includes measuring the performance of these three filtering methods."),
+                                   p("This dashboard compiles our findings and allows users to explore the information interactively.")
+                            )
+                            ),
+                                   
                           fluidRow(align = "center",
                                    p(tags$small(em('Last updated: August 2021')))
                                    )
@@ -103,46 +102,89 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                           fluidRow(style = "margin: 6px;",
                                    h1(strong("Data and Methodology"), align = "center"),
                                    p("", style = "padding-top:10px;"),
-                                   column(5,
-                                          h4(strong("Data")),
-                                          p("We examined research projects abstracts within the", a(href = "https://federalreporter.nih.gov/", "Federal RePORTER.", target = "_blank")),
-                                          p("The Federal RePORTER is a database of federally funded science research projects. The database provides information on projects, including supporting
-                                            agencies, starting dates, project terms, and abstracts. Our dataset consisted all 690814 project abstracts that began within the years of 2008-2019."),
-                                          p(""),
-                                          img(src = "all_data_agency.png", style = "display:  center; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;"),
-                                          p(""),
-                                          img(src = "all_data_start_year.png", style = "display:  center; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;")
+                                   column(6, style = "padding-left:25px",
+                                          h3(strong("Data")),
+                                          p("We examined research projects within ", a(href = "https://federalreporter.nih.gov/", "Federal RePORTER", target = "_blank"), ", a database of federally funded grants. The data includes project abstracts and information such as funding agency, start date, and total cost. During prior work we cleaned and processed this dataset by"),
+                                          tags$ul(
+                                            tags$li("filling in missing project start dates,"),
+                                            tags$li("deduplicating records, and"),
+                                            tags$li("cleaning and processing the project abstract text using natural language processing (NLP) techniques such as tokenization, lemmatization, stop word removal, and adding bigrams and trigrams.")
+                                          ),
+                                          br(),
+                                          h4(strong("After processing, our dataset consisted of 690,814 projects."), style = "border: 2px solid navy; padding: 5px 5px 5px 5px"),
+                                          br(),
+                                          img(src = "all_data_agency.png", style="display:  block; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;", width = "500px"),       #style = "display:  center; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;"),
+                                          br(), 
+                                          p(strong("Note: "), "The National Institutes of Health (NIH) is included in the Department of Health and Human Services (HHS)."),
+                                          br(),
+                                          img(src = "all_data_start_year.png", style="display:  block; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;", width = "500px"),   #style = "display:  center; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;")
                                           
                                           ),
-                                   column(5,
-                                          h4(strong("Methodology")),
+                                   column(6, style = "padding-left:25px",
+                                          h3(strong("Methodology")),
+                                          p("Finding federally funded topics and topic trends in AI is mainly a two-step problem."),
+                                          tags$ol(
+                                            tags$li(strong("Filtering"), ": we filter the data to extract only those projects about AI."),
+                                            tags$li(strong("Topic Modeling"), ": we then run a topic model on our AI-related projects to discover topics and their trends in the area of AI.")
+                                          ),
                                           fluidRow( style = "margin: 6px;",
-                                                    p("", style = "padding-top:10px;"),
-                                                    h4(strong("Information Retrieval/Filtering Methods")),
-                                                    p("1. Term Matching"),
-                                                    p("2. Term Matching + Latent Dirichlet Allocation (LDA)"),
-                                                    p("3. Sentence BERT Embeddings"),
+                                                    #p("", style = "padding-top:10px;"),
+                                                    h4(strong("Filtering Methods")),
+                                                    p("We use three filtering methods in this project. Each method has a corresponding dashboard tab on which the method is described."),
+                                                    tags$ul( 
+                                                      tags$li(strong("Term Matching"), ", as proposed by the Organisation for Economic Co-operation and Development (OECD) [1]"),
+                                                      tags$li(strong("Term Matching + Latent Dirichlet Allocation (LDA)"), ", proposed by Eads et al. [2]"),
+                                                      tags$li(strong("Sentence BERT Embeddings"), ", which compare the similarity between the AI Wikipedia page and federally funded grant abstracts.")
+                                                    ),
+                                                    br(),
                                                     h4(strong("Topic Modeling")),
+                                                    p("The goal of a topic model is to automatically extract topics from text data by clustering terms that appear together frequently in the text.  A topic is represented by one cluster of terms, where the terms are ordered by their “importance” to the topic. Generally the top five or ten words of a topic are used in analysis."),
+                                                    fluidRow(style = "border: 2px solid navy; padding: 5px 5px 5px 5px",
+                                                             h5(strong("Topic Example")),
+                                                             p("Here is a list of the five most important terms to a topic produced by one of our models."),
+                                                             tags$ul(
+                                                               tags$li("algorithm"), 
+                                                               tags$li("learning"), 
+                                                               tags$li("learn"),
+                                                               tags$li("machine_learning"),
+                                                               tags$li("theory")
+                                                             ),
+                                                             p("Based on these five words, we assume this topic is about machine learning.")
+                                                    ),
+                                                    br(),
+                                                    p("In addition to a topic-term distribution which describes the most important terms per topic, a topic model also computes a document-topic distribution which gives the amount of each topic in each document in the data.  Note that a document can contain multiple topics."),
                                                     h5(strong("Non-Negative Matrix Factorization")),
-                                                    p("Non-Negative Matrix Factorization (NMF) is a unsupervised topic model. NMF is an approximate matrix decomposition that finds the
-                                                      document-topic matrix (W) and topic-term matrix (H). The goal of topic modeling is to obtain the product of W and H, which produces
-                                                       the document-term matrix (A). This matrix A identifies clusters of words into topics."),
-                                                    img(src = "nmf_image.png", width = "400px", style = "display:  center; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;"),
-
-                                                    p("Latent Dirichlet Allocation (LDA) model is also commonly used for topic modeling. We chose NMF topic model because it achieved higher topic coherence than (LDA), based on last year's study."),
+                                                    p("We use Non-Negative Matrix Factorization (NMF) [3] to perform topic modeling on the filtered AI-related projects. NMF is an approximate matrix decomposition that approximately factorizes the document-term matrix (A)
+                                                      as the product of a document-topic matrix (W) and a topic-term matrix (H). NMF can also be thought of as an unsupervised soft clustering method, meaning that a term could appear in multiple topics.
+                                                      "),
+                                                    img(src = "nmf_image.png", style="display:  block; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;", width = "400px"),   #width = "400px", style = "display:  center; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;"),
+                                                    h5(strong("Latent Dirichlet Allocation")),
+                                                    p("Latent Dirichlet Allocation (LDA) [4] is also a commonly used topic model. It is a probabilistic algorithm unlike NMF which is a linear algebraic method.  LDA is used in the filtering method of [2] that we explore in this project."), 
+                                                    br(),
                                                     h4(strong("Topic Model Evaluation")),
+                                                    p("START EDITING HERE"),
                                                     p("We used topic coherence to evalute the strength of our topic models. Topic coherence scores measures the semantic similarity between
                                                             high scoring words in each topic and provides a way to compare models. To determine the optimal number of topics for each model, we chose the
-                                                            number of topics that correlated with the highest coherence score.")
+                                                            number of topics that correlated with the highest coherence score."),
+                                                    p(" We chose NMF topic model because it achieved higher topic coherence than (LDA), based on last year's study.")
                                           ),
 
                                           fluidRow( style = "margin: 6px;",
                                                    p("", style = "padding-top:10px;"),
                                                    h4(strong("Identifying Emerging Topics")),
-                                                          p("In order to identify which topics in AI are emerging, we use linear regression on the abstracts about a topic over the years in the data.
+                                                          p("In order to identify which topics in AI are emerging, we follow the method of [5] and use linear regression on the abstracts about a topic over the years in the data.
                                             A positive correlation between the topic prevalence in our corpus over time indicates that it is an emerging topic in AI, or a 'hot' topic.
                                             A negative correlation tells us that this topic is decreasing in popularity, or is a 'cold' topic.")
-                                                          )
+                                          ),
+                                          
+                                          fluidRow(style = "margin: 6px;",
+                                            h4(strong("References")),
+                                            p(tags$small("[1] OECD. (2019). Identifying government funding of AI-related R&D projects - An initial exploration based on US NIH and NSF project funding data.  Directorate for Science, Technology, and Innovation and Committee for Scientific and Technological Policy. Organisation for Economic Co-operation and Development (OECD). Paris, France.")),
+                                            p(tags$small("[2] Eads, A., Schofield, A., Mahootian, F., Mimno, D., & Wilderom, R. (2021). Separating the wheat from the chaff: A topic and keyword-based procedure for identifying research-relevant text. Poetics, 86 (Article 101527).")),
+                                            p(tags$small("[3] Lee, D., & Seung, H. (1999). Learning the parts of objects by non-negative matrix factorization. Nature, 401, 788-791.")),
+                                            p(tags$small("[4] Blei, D., Ng, A., & Jordan, M. (2003). Latent Dirichlet allocation. Journal of Machine Learning Research, 3, 993-1022.")),
+                                            p(tags$small("[5] Griffiths, T., & Steyvers, M. (2004). Finding scientific topics. Proceedings of the National Academy of Sciences, USA, 101(1), 5228-35."))
+                                          )
 
                                    )
                                    )
@@ -150,11 +192,11 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                  # Tab3. Method 1. OECD, Cierra -----------------------------------------------------------
                  tabPanel("Filtering Method 1. Term Matching", value = "socio",
                           fluidRow(style = "margin: 6px;",
-                                   h1(strong("OECD Term Matching Approach"), align = "center"),
+                                   h1(strong("Term Matching"), align = "center"),
                                    p("", style = "padding-top:10px;"),
                                    column(4, #style = "border-right: 2px solid navy; padding: 10px 5px 5px 5px",
                                           h3(strong("Method")),
-                                          p("To filter the corpus for AI, we used the method in [1] by the", a(href = "https://www.oecd.org/unitedstates/", "Organization for Economic Co-operation and Development", target = "_blank"), "(OECD).
+                                          p("To filter the corpus for AI, we used the method in [1] by the", a(href = "https://www.oecd.org/unitedstates/", "Organisation for Economic Co-operation and Development", target = "_blank"), "(OECD).
                                             OECD created a list of key terms which are broken into two groups: core terms and non-core terms."), 
                                           br(),
                                           h4(strong(" A document is considered AI-related if its abstract contains at least one core term or two non-core terms."), style = "border: 2px solid navy; padding: 5px 5px 5px 5px"),
@@ -259,12 +301,12 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                                                             tags$li("text mine"),
                                                             tags$li("text summarization"),
                                                             tags$li("word sense disambiguation"))),
-                                          p(tags$small("[1] OECD. (2019). Identifying government funding of AI-related R&D projects - An initial exploration based on US NIH and NSF project funding data.  Directorate for Science, Technology, and Innovation and Committee for Scientific and Technological Policy. Organization for Economic Co-operation and Development (OECD). Paris, France."))),
+                                          p(tags$small("[1] OECD. (2019). Identifying government funding of AI-related R&D projects - An initial exploration based on US NIH and NSF project funding data.  Directorate for Science, Technology, and Innovation and Committee for Scientific and Technological Policy. Organisation for Economic Co-operation and Development (OECD). Paris, France."))),
               
                                    
                                    column(8,
                                           h3(strong("Results")),
-                                          h4(strong("In total, 7933 projects are classified as AI related with this method.")),
+                                          h4(strong("In total 7,933 projects are classified as AI related with this method.")),
                                           tabsetPanel(id= "m1tabs",
                                             tabPanel(id= "m1.1","Funding Sources",
                                                     p(""),
@@ -324,26 +366,40 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                 # Method 2. Term Matching + LDA, Haleigh -----------------------------------------------------------
                 tabPanel("Filtering Method 2. Term Matching + LDA", value = "socio",
                          fluidRow(style = "margin: 6px;",
-                                  h1(strong("LDA and Term Matching Approach"), align = "center"),
+                                  h1(strong("Term Matching and LDA"), align = "center"),
                                   p("", style = "padding-top:10px;"),
                                   column(4,
                                          h3(strong("Method")),
-                                         p("This method uses a combination of term matching and LDA in order to filter to AI-related grant abstracts."),
-                                         p("Eads and others use a more supervised method for filtering their corpus.  We adapt this to our abstract data.
-                                            The method uses LDA topic modeling in combination with a keyword list in order to identify topics about AI in
-                                            a corpus whether they directly mention the keywords or not. Before topic modeling, we filter our data to only
-                                            include projects produced by the NSF, and within the subject area of Computer and Information Science and Engineering.
-                                            We do this to have a more narrow corpus in hopes to increase the AI presence within the data.  After filtering, we have
-                                            about 16,000 grant abstracts.  We found that an LDA topic model with 100 topics gave us several topics about AI. As an intital
-                                            keyword list, we use the AI core terms identified by the OECD paper (ref?), and extend this with the most common words used in
-                                            the AI-related topics identified by our topic model."),
-                                         p("After obtaining the AI-related topics and keyword list, we used the /wheat_filtration/ package made available by Eads et al. to
-                                            filter the overall corpus to those related to AI."),
-                                         p(tags$small("[2] Eads, A., Schofield, A., Mahootian, F., Mimno, D., & Wilderom, R. (2021). Separating the wheat from the chaff: A topic and keyword-based procedure for identifying research-relevant text. Poetics, 86 (Article 101527)."))
+                                         p("We use the method of [2] by Eads et al. as our second approach to filtering our corpus for projects related to AI.",  strong("This method uses a combination of Latent Dirichlet Allocation (LDA), a topic model algorithm, and term matching in order to filter AI-related grant abstracts."), "This method is semiautomatic but requires a high-level of human intervention."),
+                                         fluidRow(style = "border: 2px solid navy; padding: 5px 5px 5px 5px",
+                                                  h4(strong("Overview")),
+                                                  tags$ol(
+                                                    tags$li("Run an LDA topic model on the project abstracts. Determine which resulting topics are related to AI."), 
+                                                    tags$li("Using the AI-related topics, create a “refined topic” that includes 200 terms that have the highest probabilities of appearing in the relevant topics rather than the non-relevant topics."), 
+                                                    tags$li("Create a super keyword list by extending the list of terms in the “refined topic” to 1000 and then choosing only those terms that are very clearly about AI."),
+                                                    tags$li("Determine if each project abstract is relevant to AI."),
+                                                  )
                                          ),
+                                         br(),
+                                          fluidRow(style = "border: 2px solid navy; padding: 5px 5px 5px 5px",  
+                                                  h4(strong("Filter")),
+                                                  p(strong("A project abstract is relevant to AI if at least one of three conditions is true.")),
+                                                  tags$ul(
+                                                    tags$li("The amount of AI-related topics in the abstract is at least 25%."),
+                                                    tags$li("The abstract contains at least 25% of the terms in the “refined topic”."),
+                                                    tags$li("The abstract contains at least one super keyword term.")
+                                                    )
+                                                  
+                                         ),
+                                         br(),
+                                         h4(strong("Method Modifications")), #style = "border: 2px solid navy; padding: 5px 5px 5px 5px"),
+                                         p("The signal for AI in our full corpus of project abstracts is not strong enough to be picked up by a topic model.  Thus before topic modeling, we filter our data to only include projects funded by the NSF, and within the subject area of Computer and Information Science and Engineering.  We do this to have a more focused corpus with a stronger AI presence within the data.  This process led to about 16,000 grant abstracts on which we found that an LDA topic model with 100 topics gave us several topics about AI.  We used the results of this model to create the “refined topic” and super keyword list."),
+                                         p("We also modified the relevancy check for each abstract by only checking the amount of AI-related topics (4a.) in those abstracts included in the NSF, Computer and Information Science and Engineering corpus.  Testing this relevancy criterion on the full corpus remains as future work."),
+                                         p(tags$small("[2] Eads, A., Schofield, A., Mahootian, F., Mimno, D., & Wilderom, R. (2021). Separating the wheat from the chaff: A topic and keyword-based procedure for identifying research-relevant text. Poetics, 86 (Article 101527)."))
+                                        ),
                                   column(8,
                                          h3(strong("Results")),
-                                         h4(strong("In total, 12694 projects are classified as AI related with this method.")),
+                                         h4(strong("In total 12,694 projects are classified as AI related with this method.")),
                                          tabsetPanel(
                                            tabPanel("Funding Sources",
                                                     br(),
@@ -403,7 +459,7 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                  #Tab5.  Method 3. Bert, Crystal -----------------------------------------------------------
                  tabPanel(id= "m3","Filtering Method 3. Embedding", value = "socio",
                           fluidRow(style = "margin: 6px;",
-                                   h1(strong("Sentence Bert Embedding"), align = "center"),
+                                   h1(strong("Sentence BERT Embedding"), align = "center"),
                                    p("", style = "padding-top:10px;"),
                                    column(4,
                                           h3(strong("Method")),
@@ -461,7 +517,7 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                                    column(8,
                                           h3(strong("Results")),
 
-                                          h4(strong("In total, 7658 projects are classified as AI related with this method.")),
+                                          h4(strong("In total 7,658 projects are classified as AI related with this method.")),
 
                                           tabsetPanel(
                                             tabPanel("Funding Sources",
@@ -604,20 +660,20 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                                           img(src = "team-Eric.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
                                           img(src = "team-Joel.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
                                           img(src = "team-Stephanie.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                          p(a(href = "", 'Kathryn Kinehan', target = '_blank'), "(Project Lead, Research Scientist);",
-                                            a(href = "", 'Eric Oh', target = '_blank'), "(Research Assistant Professor);",
-                                            a(href = '', 'Joel Thurston', target = '_blank'), "(Senior Scientist).",
-                                          a(href = "", 'Stephanie Shipp', target = '_blank'), "(Deputy Division Director, Research Professor);"),
+                                          p(a(href = "https://biocomplexity.virginia.edu/person/kathryn-linehan", 'Kathryn Linehan', target = '_blank'), "(Project Lead, Research Scientist);",
+                                            a(href = "https://biocomplexity.virginia.edu/person/eric-oh", 'Eric Oh', target = '_blank'), "(Research Assistant Professor);",
+                                            a(href = "https://biocomplexity.virginia.edu/person/joel-thurston", 'Joel Thurston', target = '_blank'), "(Senior Scientist).",
+                                          a(href = "https://biocomplexity.virginia.edu/person/stephanie-shipp", 'Stephanie Shipp', target = '_blank'), "(Deputy Division Director, Research Professor);"),
                                           p("", style = "padding-top:10px;")
                                     )
                                     ),
                           fluidRow(style = "margin-left: 300px; margin-right: 300px;",
                                    h4(strong("Project Stakeholders")),
-                                   p(a(href = '', 'John Jankowski', target = '_blank'), "(NCSES, Director of R&D Statistics Program);",
-                                     a(href = '', 'Audrey Kindlon', target = '_blank'), "(NCSES, Survey Statistician)."),
+                                   p(strong('John Jankowski'), "(NCSES, Director of R&D Statistics Program);",
+                                     strong('Audrey Kindlon'), "(NCSES, Survey Statistician)."),
                                    p("", style = "padding-top:10px;"),
                                    h4(strong("Acknowledgments")),
-                                   p("We would like to thank  XXXXX  for their input to this project.")
+                                   p("We would like to thank Sallie Keller for helpful feedback on this project.")
                           )
                         )
 )
