@@ -154,27 +154,27 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                                                     br(),
                                                     p("In addition to a topic-term distribution which describes the most important terms per topic, a topic model also computes a document-topic distribution which gives the amount of each topic in each document in the data.  Note that a document can contain multiple topics."),
                                                     h5(strong("Non-Negative Matrix Factorization")),
-                                                    p("We use Non-Negative Matrix Factorization (NMF) [3] to perform topic modeling on the filtered AI-related projects. NMF is an approximate matrix decomposition that approximately factorizes the document-term matrix (A)
+                                                    p("We use Non-Negative Matrix Factorization (NMF) [3] to perform topic modeling on the filtered AI-related projects. NMF approximately factors the document-term matrix (A)
                                                       as the product of a document-topic matrix (W) and a topic-term matrix (H). NMF can also be thought of as an unsupervised soft clustering method, meaning that a term could appear in multiple topics.
                                                       "),
                                                     img(src = "nmf_image.png", style="display:  block; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;", width = "400px"),   #width = "400px", style = "display:  center; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;"),
                                                     h5(strong("Latent Dirichlet Allocation")),
-                                                    p("Latent Dirichlet Allocation (LDA) [4] is also a commonly used topic model. It is a probabilistic algorithm unlike NMF which is a linear algebraic method.  LDA is used in the filtering method of [2] that we explore in this project."), 
+                                                    p("Latent Dirichlet Allocation (LDA) [4] is also a commonly used topic model. It is a probabilistic algorithm unlike NMF which is a linear algebraic method.  LDA is used in the filtering method of [2] that we explore in this project.  We use NMF rather than LDA for topic modeling on the filtered AI-related projects because in prior work we found that NMF performs better than LDA."), 
                                                     br(),
                                                     h4(strong("Topic Model Evaluation")),
-                                                    p("START EDITING HERE"),
-                                                    p("We used topic coherence to evalute the strength of our topic models. Topic coherence scores measures the semantic similarity between
-                                                            high scoring words in each topic and provides a way to compare models. To determine the optimal number of topics for each model, we chose the
-                                                            number of topics that correlated with the highest coherence score."),
-                                                    p(" We chose NMF topic model because it achieved higher topic coherence than (LDA), based on last year's study.")
+                                                    
+                                                    p("We use C", tags$sub("V"), "topic coherence [5] to evalute the performance of our topic models and compare across models.  (Throughout this dashboard we will refer to this measure only as “topic coherence”.)  Topic coherence is measured per topic; the overall model topic coherence score is the average of these scores per topic."), 
+                                                    p(strong("For a given topic, topic coherence measures how frequently the most important words in the topic appear within close proximity of each other in the text, and includes some semantic information as well."), 
+                                                            "Since we do not know the number of topics present in the text before running the topic model, we run each topic model using varying numbers of topics.  We choose the
+                                                            number of topics that gives the highest coherence score as our optimal topic model.")
+                                                    
                                           ),
 
                                           fluidRow( style = "margin: 6px;",
                                                    p("", style = "padding-top:10px;"),
-                                                   h4(strong("Identifying Emerging Topics")),
-                                                          p("In order to identify which topics in AI are emerging, we follow the method of [5] and use linear regression on the abstracts about a topic over the years in the data.
-                                            A positive correlation between the topic prevalence in our corpus over time indicates that it is an emerging topic in AI, or a 'hot' topic.
-                                            A negative correlation tells us that this topic is decreasing in popularity, or is a 'cold' topic.")
+                                                   h4(strong("Identifying Topic Trends")),
+                                                          p("In order to identify topic trends in AI, we follow the method of [6] and use our topic model results on the filtered AI-projects.  Specifically, for each project we have a start date from which we extract the year. For each topic we calculate the mean topic weight over the set of projects with each given start year (i.e. the mean amount of the topic present across the AI-related project abstracts for a given start year).", strong("We then use linear regression to capture the trend of mean topic weight over time."), 
+                                            "A positive correlation between the mean topic weight and time indicates that the topic prevalence in the corpus is increasing over time.  A negative correlation indicates that this topic is decreasing in prevalence over time.")
                                           ),
                                           
                                           fluidRow(style = "margin: 6px;",
@@ -183,8 +183,11 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                                             p(tags$small("[2] Eads, A., Schofield, A., Mahootian, F., Mimno, D., & Wilderom, R. (2021). Separating the wheat from the chaff: A topic and keyword-based procedure for identifying research-relevant text. Poetics, 86 (Article 101527).")),
                                             p(tags$small("[3] Lee, D., & Seung, H. (1999). Learning the parts of objects by non-negative matrix factorization. Nature, 401, 788-791.")),
                                             p(tags$small("[4] Blei, D., Ng, A., & Jordan, M. (2003). Latent Dirichlet allocation. Journal of Machine Learning Research, 3, 993-1022.")),
-                                            p(tags$small("[5] Griffiths, T., & Steyvers, M. (2004). Finding scientific topics. Proceedings of the National Academy of Sciences, USA, 101(1), 5228-35."))
-                                          )
+                                            p(tags$small("[5] Röder, M., Both, A., & Hinneburg, A. (2015). Exploring the space of topic coherence measures. WSDM '15: Proceedings of the Eighth ACM International Conference on Web Search and Data Mining (pp. 399-408). Association for Computing Machinery, New York, NY.")),
+                                            p(tags$small("[6] Griffiths, T., & Steyvers, M. (2004). Finding scientific topics. Proceedings of the National Academy of Sciences, USA, 101(1), 5228-35.")),
+                                            p(tags$small("[7] Reimers, N., & Gurevych, I. (2019). Sentence-BERT: Sentence EMBEDDINGS using Siamese Bert-Networks."))
+                                            
+                                            )
 
                                    )
                                    )
@@ -326,7 +329,7 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                                                      
                                                      tags$ul(
                                                        tags$li(strong("Mean Topic Weight"), " measures how much a topic is represented in our set of documents"), 
-                                                       tags$li("The ", strong("n"), " value for each topic describes the number of documents with a mean topic weight above 0. In other words, n is the number of documents containing the specific topic.")
+                                                       tags$li("The ", strong("n"), " value for each topic describes the number of documents with that topic weight above 0. In other words, n is the number of documents containing the specific topic.")
                                                      ),
                                                      
                                                      selectInput(
@@ -385,7 +388,7 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                                                   h4(strong("Filter")),
                                                   p(strong("A project abstract is relevant to AI if at least one of three conditions is true.")),
                                                   tags$ul(
-                                                    tags$li("The amount of AI-related topics in the abstract is at least 25%."),
+                                                    tags$li("The proportion of the abstract made up of AI-related topics is at least 25%."),
                                                     tags$li("The abstract contains at least 25% of the terms in the “refined topic”."),
                                                     tags$li("The abstract contains at least one super keyword term.")
                                                     )
@@ -419,7 +422,7 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
 
                                                     tags$ul(
                                                       tags$li(strong("Mean Topic Weight"), " measures how much a topic is represented in our set of documents"), 
-                                                      tags$li("The ", strong("n"), " value for each topic describes the number of documents with a mean topic weight above 0. In other words, n is the number of documents containing the specific topic.")
+                                                      tags$li("The ", strong("n"), " value for each topic describes the number of documents with that topic weight above 0. In other words, n is the number of documents containing the specific topic.")
                                                     ),
                                                     selectInput(
                                                       inputId = "k2",
@@ -446,7 +449,7 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                                                       tags$ul(
                                                         tags$li("Network Analysis (Topic 2)  and Robotics (Topic 4) are among the topics with a positive relationship between mean topic weight and the years in our data, meaning that they are emerging topics in our corpus."), 
                                                         tags$li("Speech Recognition (Topic 15) is decreasing the most over time."), 
-                                                        tags$li("Despite decreasing mean topic weights, some topics still have a large presence in our AI corpus.  For example, see Topic 9 which has a decreasing trend over time, yet contains abstracts than Topic 1, which has the steepest positive slope."), 
+                                                        tags$li("Despite decreasing mean topic weights, some topics still have a large presence in our AI corpus.  For example, see Topic 9 which has a decreasing trend over time, yet contains more abstracts than Topic 1, which has the steepest positive slope."), 
                                                         tags$li("Topic 7 has the most abstracts and lists the words 'statistical', 'algorithm', and 'theory', and has a fairly flat trend over time.  It is possible that many documents reference these terms in their methods.")
                                                       )
                                                     )
@@ -463,48 +466,55 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                                    p("", style = "padding-top:10px;"),
                                    column(4,
                                           h3(strong("Method")),
+                                          
                                           h4(strong("Web Scraping on AI Wiki")),
-                                          p("We scraped" , a(href = "https://en.wikipedia.org/wiki/Artificial_intelligence", "Artificial Intelligence Wikipedia page", target = "_blank") , "and extracted text.
-                                            We believe that Wikipedia of AI provides an accurate description of what AI is and a thorough list of subfields of AI. "),
-                                          h4(strong("Sentence Embedding")),
-                                          p("Sentence embedding is a type of representation that allows sentences with similar meaning to have a similar representation. Bidirectional Encoder Representations from Transformers (BERT),
-                                          is a transformer-based machine learning technique for natural language processing (NLP) pre-training developed by Google. Sentence-BERT (SBERT) [3], is a modification
-                                          of the pretrained BERT use network structures to derive semantically meaningful sentence embeddings."),
-
-                                          p("We computed sentence embeddings using", a(href = "https://www.sbert.net/", "SBERT", target = "_blank"),  "We used a pre-trained model",
-                                            a(href = "https://www.sbert.net/docs/pretrained_models.html", "paraphrase-MiniLM-L6-v2", target = "_blank"),
-                                            "to embed AI Wiki and Federal RePORTER abstracts. This is a quick model with high quality. There are more accurate pre-trained model, but requires more computating power."),
-                                          column(5, h4(strong("AI Wiki Embedding"), style = "border: 4px solid navy;")),
-                                          column(5, h4(strong("Abstract Embedding"), style = "border: 4px solid navy; ")), br(),
+                                          p("We scraped the" , a(href = "https://en.wikipedia.org/wiki/Artificial_intelligence", "Artificial Intelligence Wikipedia page", target = "_blank") , "and extracted the text.
+                                            We believe that the AI Wikipedia page provides an accurate description of AI and a thorough list of AI subfields. "),
                                           br(),
+                                          h4(strong("Sentence Embedding")),
+                                          p("Sentence embeddings are a type of numeric representation for sentences that allows sentences with similar meanings to have similar embeddings. Bidirectional Encoder Representations from Transformers (BERT),
+                                          is a transformer-based machine learning technique for natural language processing (NLP) pre-training developed by Google. Sentence-BERT (SBERT) [7] is a modification
+                                          of the pretrained BERT model that uses network structures to derive semantically meaningful sentence embeddings."),
+
+                                          p("We computed sentence embeddings using", a(href = "https://www.sbert.net/", "SBERT", target = "_blank"),  "; specifically, we used a pre-trained model",
+                                            a(href = "https://www.sbert.net/docs/pretrained_models.html", "paraphrase-MiniLM-L6-v2", target = "_blank"),
+                                            "to embed the AI Wikipedia page and Federal RePORTER project abstracts. This is a fast-running, high quality model. There are more accurate pre-trained models available, but they require more computing power."),
+                                          fluidRow(
+                                          column(6, h4(strong("AI Wikipedia Page Embedding"), style = "border: 4px solid navy; padding: 5px 5px 5px 5px")),
+                                          column(5, h4(strong("Abstract Embedding"), style = "border: 4px solid navy; padding: 5px 5px 5px 5px")), 
+                                          ),
+                                        
                                           br(),
                                           h4(strong("Cosine Similarity Score")),
-                                          p("Cosine similarity measures the similarity between two non-zero vectors (sentences). Two same vectors would have a cosine-similarity score of 1, while two independent/perpendicular vectors
-                                            would have a cosine-similarity score of 0. Higher the score, more similar two sentences are."),
+                                          p("Cosine similarity measures the similarity between two non-zero vectors (i.e. sentence embeddings). Two sentence embeddings that are the same would have a cosine similarity score of 1, while two independent/perpendicular sentence embeddings
+                                            would have a score of 0. A higher cosine similarity score indicates a higher degree of similarity between the two sentences."),
+                                          p("We compared the sentence embeddings of the AI Wikipedia page to those of Federal RePORTER project abstracts using cosine similarity. For each sentence in an abstract, we identified the top ten most similar sentences from the AI Wikipedia page and then averaged these ten cosine similarity scores to find the similarity score for the sentence."),
                                           
 
-                                          
-                                          h5(strong("Example 1.")),
+                                          fluidRow(style = "border: 2px solid navy; padding: 5px 5px 5px 5px",
+                                          h5(strong("Example 1. Sentence from a Federal RePORTER abstract")),
                                           p("The game of Go is an ancient board game which is considered by-far the most complex
-                                            board game for computer software or artificial intelligence (AI) to solve.", style = "border: 2px solid navy; padding: 5px 5px 5px 5px"),
+                                            board game for computer software or artificial intelligence (AI) to solve."), #style = "border: 2px solid navy; padding: 5px 5px 5px 5px"),
                                           
-                                          p("Cosine-similarity score: 0.65"),
-                                          
-                                          h5(strong("Example 2.")),
+                                          p("Sentence cosine-similarity score: 0.65")
+                                          ),
+                                          br(),
+                                          fluidRow(style = "border: 2px solid navy; padding: 5px 5px 5px 5px",
+                                          h5(strong("Example 2. Sentence from a Federal RePORTER abstract")),
                                           p("The multiprotein complex y-secretase proteolytically cleaves the intramembrance of amyloid precursoprotein (APP), which
-                                            in turn forms the plaques found in Alzheimer's disease (AD) patients", style = "border: 2px solid navy; padding: 5px 5px 5px 5px"),
+                                            in turn forms the plaques found in Alzheimer's disease (AD) patients"),   #style = "border: 2px solid navy; padding: 5px 5px 5px 5px"),
 
-                                          p("Cosine-similarity score: 0.31"),
+                                          p("Sentence cosine-similarity score: 0.31")
+                                          ),
+                                          br(),
                                           
-                                          p("We compared the embeddings of AI Wiki to Federal RePORTER abstracts using cosine-similarity. For each sentence in an abstract, we identified the top ten most similar sentences
-                                            from our AI corpus and obtained their cosine-similarity scores. We then took the average of these ten scores and call it", strong("abstract similarity score"), ", which reflects how similar the abstract is to AI." ),
-                                           
-                                         
+                                          p("To find the", strong("abstract similarity score"), "we averaged the sentence similarity scores for the sentences in the abstract.  The abstract similarity score reflects how similar the abstract is to the AI Wikipedia page." ),
                                           
+                                          br(),
                                           h4(strong("Choosing a Cutoff Score")),
-                                          p("We classify an abstract with a ", strong("abstract similarity score"), " that is 2.5 standard deviation above the mean as AI related."),
+                                          p("We classify an abstract with a ", strong("abstract similarity score"), " that is 2.5 standard deviations above the mean as AI-related."),
          
-                                          p(tags$small("[3] Reimers, N., &amp; Gurevych, I. (2019). Sentence-BERT: Sentence EMBEDDINGS using Siamese Bert-Networks.")),
+                                          p(tags$small("[7] Reimers, N., & Gurevych, I. (2019). Sentence-BERT: Sentence EMBEDDINGS using Siamese Bert-Networks.")),
                                           br(),
                                           br(),
                                           br(),
@@ -539,7 +549,7 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
 
                                                      tags$ul(
                                                        tags$li(strong("Mean Topic Weight"), " measures how much a topic is represented in our set of documents"), 
-                                                       tags$li("The ", strong("n"), " value for each topic describes the number of documents with a mean topic weight above 0. In other words, n is the number of documents containing the specific topic.")
+                                                       tags$li("The ", strong("n"), " value for each topic describes the number of documents with that topic weight above 0. In other words, n is the number of documents containing the specific topic.")
                                                      ),
                                                      selectInput(
                                                        inputId = "k3",
@@ -562,9 +572,9 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                                                       h4(strong("Takeaways:")),
                                                       tags$ul(
                                                        tags$li("Predictive medicine (topic 2) and image recognition (topic 5) were among the topics with the most increasing mean topic weight."), 
-                                                       tags$li("Innovative social science (topic 8), user interaction (topic 16) are the topics had most occurance in the documents, indicating that many ai related 
-                                                               abstracts may be the applications of ai."), 
-                                                       tags$li("Neural network(topic 20) is the the most decreasing mean topic weight, but it occured in many documents, indicating it's widely studied.")
+                                                       tags$li("Innovative social science (topic 8) and user interaction (topic 16) are the topics had the highest occurrence in the documents, indicating that many AI-related 
+                                                               abstracts may be about the applications of AI."), 
+                                                       tags$li("Neural networks (topic 20) has the most decreasing mean topic weight, but it occurred in many documents, indicating it's widely studied.")
                                                       )
                                                      )
                                                      
@@ -575,6 +585,7 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                                    )
                           ),
 
+              # Discussion tab -----------------------------------------------  
                tabPanel("Discussion", value = "socio",
                         fluidRow(style = "margin: 6px;",
                                  h1(strong("Discussion"), align = "center"),
@@ -592,39 +603,44 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                                                                summarize(N=n(), "Percent (%)" = round(N/690814*100, digits = 2))%>%
                                                                gt()%>%
                                                                tab_header(
-                                                                 title = "Comparison of The Number of Projects that are Classified as AI",
-                                                                 subtitle = "Project Start Year From 2008 to 2018"),
+                                                                 title = "Comparison of the Number of Projects that are Classified as AI"
+                                                                 #subtitle = "Project Start Year From 2008 to 2018"),
+                                                               ),
 
                                                              br(),
                                                              br(),
                                                              br(),
 
-                                                             img(src = "all_agency.png", width = "650px", style = "display:  center; margin-left: 50px ; margin-right: auto; border: 1px solid #C0C0C0;"),
-                                                             br(),
+                                                             img(src = "all_agency.png", width = "550px", style = "display:  block; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;"),  #"display:  center; margin-left: 50px ; margin-right: auto; border: 1px solid #C0C0C0;"),
+                                                             br(), br(),
 
-                                                             img(src = "all_start_year.png", width = "650px", style = "display:  center; margin-left: 50px; margin-right: auto; border: 1px solid #C0C0C0;")
+                                                             img(src = "all_start_year.png", width = "550px", style = "display:  block; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;")  #"display:  center; margin-left: 50px; margin-right: auto; border: 1px solid #C0C0C0;")
 
 
                                                     ),
                                                     tabPanel("NMF Model Fitting",
-                                                             p("First filtering method: Term Matching proposed by OECD achieved the highest topic coherence."),
-                                                             img(src = "nmf_coherence_all.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
+                                                             br(),
+                                                             h4(strong("The term matching filtering approach by OECD achieved the highest topic coherence."), style = "border: 2px solid navy; padding: 5px 5px 5px 5px"),
+                                                             br(),  
+                                                             img(src = "nmf_coherence_all.png", width = "700px", style = "display:  block; margin-left: auto; margin-right: auto; border: 1px solid #C0C0C0;")  #style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "800px")
                                                     )
                                                  )
                                         ),
                                  column(4,
                                         h3(strong("Future Work")),
-                                        h5(strong("Precision and Recall")),
+                                        h4(strong("Evaluate Filtering Method Performance")),
                                         p("To evaluate the quality of these three filtering methods,
-                                                  we plan to measure their precision and recall. Precision is
-                                                  also known as positive predictive value, and recall is known
-                                                  as sensitivity."),
-                                        p("For each filtering method, we would randomly
-                                                  select a certain number abstracts that are classified as AI related and are
-                                                  classified as NOT AI related. And manually label them into: true positive,
-                                                  true negative, false positive, and false negative. And then we would compare
-                                                  the precision and recall for each filtering method.")
-                                        
+                                                  we plan to measure precision and recall."), 
+                                          p(strong("Precision:"), "the percentage of documents returned as AI-related by a filtering method that are in fact AI-related.  This is a measure of true positives.", style = "border: 2px solid navy; padding: 5px 5px 5px 5px"),
+                                          p(strong("Recall:"), "the percentage of AI-related documents that a filtering method returned as AI-related.", style = "border: 2px solid navy; padding: 5px 5px 5px 5px"),    
+                               
+                                        p("This requires us to select a random sample of project abstracts and manually label them as AI-related or not AI-related. Then we would test each filtering method on the labeled subset."),
+                                        br(),
+                                        h4(strong("Further Filtering Method Comparison")),
+                                        p("We plan to continue the filtering method comparison by computing the overlap between methods.  In other words, we will calculate which projects were returned as AI-related by all three methods, two methods, or a single method."),
+                                        br(),
+                                        h4(strong("Investigation of Other Themes")),
+                                        p("We would like to extend this work to themes other than AI, such as bioeconomy.")
                                  )
                                 )
                       ),
@@ -649,9 +665,9 @@ ui <- navbarPage(title = HTML("<img src='./DSPG_black-01.png' width='120px' styl
                                           img(src = "team-Crystal.jpeg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
                                           img(src = "team-Cierra.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
                                           img(src = "team-Haleigh.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                          p(a(href = '', 'Crystal Zang', target = '_blank'), "(University of Pittsburgh Graduate School of Public Health, Biostatistics);",
-                                            a(href = '', 'Cierra Oliveira', target = '_blank'), "(Clemson University);",
-                                            a(href = '', 'Haleigh Tomlin', target = '_blank'), "(Washington and Lee University)."),
+                                          p(strong('Crystal Zang'), "(University of Pittsburgh Graduate School of Public Health, Biostatistics);",
+                                            strong('Cierra Oliveira'), "(Clemson University);",
+                                            strong('Haleigh Tomlin'), "(Washington and Lee University)."),
                                           p("", style = "padding-top:10px;")
                                    ),
                                    column(6, align = "center",
